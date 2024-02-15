@@ -1,0 +1,34 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Developer Mode",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--dart-define",
+                "supabase_url=https://satueztatdoodrspeksa.supabase.co",
+                "--dart-define",
+                "supabase_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNhdHVlenRhdGRvb2Ryc3Bla3NhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc5MzI2MzksImV4cCI6MjAyMzUwODYzOX0.fYNKLIKSDuj6BKixgg-_FnTnVPI7H_oEOn8qCJ4fIPc"
+              ]
+        },
+        {
+            "name": "Stage Mode",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "Release Mode",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "args": [
+                "--dart-define",
+                "supabase_url=https://satueztatdoodrspeksa.supabase.co",
+                "--dart-define",
+                "supabase_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNhdHVlenRhdGRvb2Ryc3Bla3NhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc5MzI2MzksImV4cCI6MjAyMzUwODYzOX0.fYNKLIKSDuj6BKixgg-_FnTnVPI7H_oEOn8qCJ4fIPc"
+              ]
+        }
+    ]
+}
