@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_task_manager/app_bindings.dart';
 import 'package:flutter_task_manager/core/router/router.dart';
 import 'package:flutter_task_manager/core/theme/theme.dart';
 import 'package:flutter_task_manager/feature/views/screens/export_screen.dart';
@@ -13,8 +14,9 @@ class Application extends StatelessWidget {
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: AppRouter.login,
+        initialBinding: AppBindins(),
         title: 'Task Manager',
-        theme: AppTheme.dark,
+        theme: AppTheme.light,
         darkTheme: AppTheme.dark,
         themeMode: ThemeMode.light,
         getPages: [

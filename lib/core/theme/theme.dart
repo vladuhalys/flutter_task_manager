@@ -1,45 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_manager/core/theme/app_colors/app_colors.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-abstract class AppTheme {
-  static ThemeData light = ThemeData(
+class AppTheme {
+  static final light = ThemeData(
     primarySwatch: Colors.blue,
     scaffoldBackgroundColor: AppColors.backgroundColor,
+    textTheme: TextTheme(
+      headlineMedium: TextStyle(
+        color: AppColors.textHeadlineColor,
+        fontSize: 144,
+        fontWeight: FontWeight.bold,
+        fontFamily: GoogleFonts.poppins().fontFamily,
+      ),
+      titleMedium: TextStyle(
+        color: AppColors.textTitleColor,
+        fontSize: 40,
+        fontWeight: FontWeight.bold,
+        fontFamily: GoogleFonts.poppins().fontFamily,
+      ),
+      labelMedium: TextStyle(
+        color: AppColors.textLableColor,
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+        fontFamily: GoogleFonts.roboto().fontFamily,
+      ),
+      bodyMedium: TextStyle(
+        color: AppColors.textBodyColor,
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+        fontFamily: GoogleFonts.roboto().fontFamily,
+      ),
+    ),
   );
 
-  static ThemeData dark = ThemeData(
+  static final dark = ThemeData(
     primarySwatch: Colors.blue,
     scaffoldBackgroundColor: AppColors.darkBackgroundColor,
     textTheme: TextTheme(
-      headlineLarge: TextStyle(
-        color: AppColors.darkTextHeadlineColor,
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-      ),
       headlineMedium: TextStyle(
         color: AppColors.darkTextHeadlineColor,
-        fontSize: 24,
+        fontSize: 144,
         fontWeight: FontWeight.bold,
-      ),
-      headlineSmall: TextStyle(
-        color: AppColors.darkTextHeadlineColor,
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
+        fontFamily: GoogleFonts.poppins().fontFamily,
       ),
       titleMedium: TextStyle(
-        color: AppColors.darkTextHeadlineColor,
-        fontSize: 24,
+        color: AppColors.darkTextTitleColor,
+        fontSize: 40,
         fontWeight: FontWeight.bold,
+        fontFamily: GoogleFonts.poppins().fontFamily,
       ),
       labelMedium: TextStyle(
-        color: AppColors.darkTextHeadlineColor,
+        color: AppColors.darkTextLableColor,
         fontSize: 24,
         fontWeight: FontWeight.bold,
+        fontFamily: GoogleFonts.roboto().fontFamily,
       ),
       bodyMedium: TextStyle(
-        color: AppColors.darkTextHeadlineColor,
-        fontSize: 24,
+        color: AppColors.darkTextBodyColor,
+        fontSize: 14,
         fontWeight: FontWeight.bold,
+        fontFamily: GoogleFonts.roboto().fontFamily,
       ),
     ),
   );
