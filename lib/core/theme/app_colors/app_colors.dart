@@ -16,6 +16,8 @@ abstract class AppColors {
   static const Color darkBackgroundColor = Color(0xFF0C1013);
 
   //button colors
+  static Color btnGradientStart = const Color(0xFF00B2FF);
+  static Color btnGradientEnd = const Color(0xFF0500FF);
 
   //text colors
   static Color darkTextHeadlineColor = const Color(0xFFE8F4FF).withOpacity(0.8);
