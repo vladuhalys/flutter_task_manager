@@ -4,6 +4,23 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static final light = ThemeData(
+    appBarTheme: AppBarTheme(
+      backgroundColor: AppColors.backgroundColor,
+      elevation: 0,
+      iconTheme: IconThemeData(
+        color: AppColors.textHeadlineColor,
+      ),
+    ),
+    cardColor: AppColors.backgroundColor,
+    cardTheme: CardTheme(
+      shadowColor: AppColors.darkBackgroundColor,
+      color: AppColors.backgroundColor,
+      surfaceTintColor: AppColors.backgroundColor,
+      elevation: 10,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+    ),
     primarySwatch: Colors.blue,
     scaffoldBackgroundColor: AppColors.backgroundColor,
     textTheme: TextTheme(
@@ -35,6 +52,23 @@ class AppTheme {
   );
 
   static final dark = ThemeData(
+    appBarTheme: AppBarTheme(
+      backgroundColor: AppColors.darkBackgroundColor,
+      elevation: 0,
+      iconTheme: IconThemeData(
+        color: AppColors.darkTextHeadlineColor,
+      ),
+    ),
+    cardColor: AppColors.darkBackgroundColor,
+    cardTheme: CardTheme(
+      shadowColor: AppColors.btnGradientEnd,
+      color: AppColors.darkBackgroundColor,
+      surfaceTintColor: AppColors.darkBackgroundColor,
+      elevation: 10,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+    ),
     primarySwatch: Colors.blue,
     scaffoldBackgroundColor: AppColors.darkBackgroundColor,
     textTheme: TextTheme(
