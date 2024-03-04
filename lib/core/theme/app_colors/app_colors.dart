@@ -12,6 +12,8 @@ abstract class AppColors {
   static Color textLableColor = const Color(0xFF0C1013).withOpacity(0.25);
   static Color textBodyColor = const Color(0xFF0C1013).withOpacity(0.10);
 
+  static Color textError = const Color(0xFFD32F2F);
+
   //* dark theme
   static const Color darkBackgroundColor = Color(0xFF0C1013);
 
