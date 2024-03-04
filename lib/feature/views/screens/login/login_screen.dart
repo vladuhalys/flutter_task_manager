@@ -35,9 +35,10 @@ class LoginScreen extends GetWidget<ThemeController> {
                 const SizedBox(height: 20),
                 AppGradientBorderTextField(
                     hintText: "Email",
-                    prefixIcon: const Icon(
+                    prefixIcon: Icon(
                       EvaIcons.email,
                       size: 30,
+                      color: Theme.of(context).iconTheme.color,
                     ),
                     onChanged: (value) {
                       validationController.onEmailChanged(value);

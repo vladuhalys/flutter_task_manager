@@ -37,6 +37,7 @@ class AppGradientBorderTextField extends StatelessWidget {
           .copyWith(fontWeight: FontWeight.w500, fontSize: 18),
       decoration: InputDecoration(
         suffixIcon: suffixIcon,
+        prefixIconConstraints: const BoxConstraints(minWidth: 50),
         prefixIcon: prefixIcon,
         hintText: hintText,
         hintStyle: Theme.of(context)

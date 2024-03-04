@@ -4,6 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static final light = ThemeData(
+    iconTheme: IconThemeData(
+      color: AppColors.textHeadlineColor,
+    ),
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.backgroundColor,
       elevation: 0,
@@ -52,6 +55,9 @@ class AppTheme {
   );
 
   static final dark = ThemeData(
+    iconTheme: IconThemeData(
+      color: AppColors.darkTextHeadlineColor,
+    ),
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.darkBackgroundColor,
       elevation: 0,
