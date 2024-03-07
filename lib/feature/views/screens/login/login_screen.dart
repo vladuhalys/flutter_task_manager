@@ -44,10 +44,24 @@ class LoginScreen extends GetWidget<ThemeController> {
                       validationController.onEmailChanged(value);
                     }),
                 AppErrorText(errorText: validationController.emailError),
+                const SizedBox(height: 20),
+                AppGradientBorderTextField(
+                    hintText: "Password",
+                    obscureText: true,
+                    prefixIcon: Icon(
+                      EvaIcons.lock,
+                      size: 30,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
+                    onChanged: (value) {
+                      validationController.onPasswordChanged(value);
+                    }),
+                AppErrorText(errorText: validationController.passwordError),
+                const SizedBox(height: 20),
                 AppOutlineGradientButton(
                   text: 'Login',
                   onTap: () {
-                    validationController.validateEmail();
+                    validationController.validateAll();
                     controller.changeTheme();
                   },
                 ),
