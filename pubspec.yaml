@@ -34,6 +34,5 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-  - assets/3d/che.glb
-  - assets/3d/viking_book.glb
+  - assets/animations/error_img.json
   - assets/3d/shiba.glb

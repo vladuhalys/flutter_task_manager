@@ -11,8 +11,7 @@ class ErrorScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Lottie.network(
-              'https://lottie.host/928a09ac-2339-4567-b84d-9514ed52c0ff/xeafbN1y8K.json'),
+          Lottie.asset('assets/animations/error_img.json'),
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 75.0, vertical: 20.0),
