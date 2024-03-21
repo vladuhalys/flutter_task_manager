@@ -20,6 +20,7 @@ class AppElevatedGradientButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GradientButton(
       width: width,
+      height: height,
       gradientColors: [AppColors.btnGradientStart, AppColors.btnGradientEnd],
       borderRadius: 20,
       onPressed: onTap,
