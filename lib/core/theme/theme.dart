@@ -4,6 +4,20 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static final light = ThemeData(
+    iconButtonTheme: IconButtonThemeData(
+      style: ButtonStyle(
+        overlayColor: MaterialStateProperty.all(
+          Colors.transparent,
+        ),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        overlayColor: MaterialStateProperty.all(
+          Colors.transparent,
+        ),
+      ),
+    ),
     iconTheme: IconThemeData(
       color: AppColors.textHeadlineColor,
     ),
@@ -55,6 +69,20 @@ class AppTheme {
   );
 
   static final dark = ThemeData(
+    iconButtonTheme: IconButtonThemeData(
+      style: ButtonStyle(
+        overlayColor: MaterialStateProperty.all(
+          Colors.transparent,
+        ),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        overlayColor: MaterialStateProperty.all(
+          Colors.transparent,
+        ),
+      ),
+    ),
     iconTheme: IconThemeData(
       color: AppColors.darkTextHeadlineColor,
     ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_manager/app_bindings.dart';
+import 'package:flutter_task_manager/core/localization/localization.dart';
 import 'package:flutter_task_manager/core/router/router.dart';
 import 'package:flutter_task_manager/core/theme/theme.dart';
 import 'package:flutter_task_manager/feature/views/screens/error/error_screen.dart';
@@ -16,6 +17,9 @@ class Application extends GetWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: AppRouter.login,
         initialBinding: AppBindins(),
+        translations: AppLocalization(), // your translations
+        locale: Get.deviceLocale, // translations will be displayed in that locale
+        fallbackLocale: const Locale('en', 'US'),
         title: 'Task Manager',
         theme: AppTheme.light,
         darkTheme: AppTheme.dark,

@@ -13,12 +13,6 @@
               ]
         },
         {
-            "name": "Stage Mode",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile"
-        },
-        {
             "name": "Release Mode",
             "request": "launch",
             "type": "dart",

@@ -1,3 +1,4 @@
+import 'package:flutter_task_manager/core/localization/keys.dart';
 import 'package:get/get.dart';
 
 class ValidationController extends GetxController {
@@ -31,9 +32,9 @@ class ValidationController extends GetxController {
 
   void validateEmail() {
     if (email.isEmpty) {
-      _emailError.value = 'Email is required';
+      _emailError.value = LangKeys.emailIsRequired.tr;
     } else if (!GetUtils.isEmail(email)) {
-      _emailError.value = 'Invalid email';
+      _emailError.value = LangKeys.invalidEmail.tr;
     } else {
       _isEmailValid.value = true;
     }
@@ -42,9 +43,9 @@ class ValidationController extends GetxController {
 
   void validatePassword() {
     if (password.isEmpty) {
-      _passwordError.value = 'Password is required';
+      _passwordError.value = LangKeys.passwordIsRequired.tr;
     } else if (password.length < 6) {
-      _passwordError.value = 'Password must be at least 6 characters';
+      _passwordError.value = LangKeys.passwordMustBeAtLeast6Characters.tr;
     } else {
       _isPasswordValid.value = true;
     }
