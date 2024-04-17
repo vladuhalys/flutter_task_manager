@@ -16,5 +16,6 @@ abstract class Ukrainian {
     'password': 'Пароль',
     'login': 'Увійти',
     'welcome_back': 'Ласкаво просимо назад!',
+    'login_with_social_media': 'Увійти через соціальні мереж:',
   };
 }

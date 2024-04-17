@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_task_manager/core/localization/controller/localization_controller.dart';
 import 'package:flutter_task_manager/core/localization/keys.dart';
 import 'package:flutter_task_manager/core/theme/theme_controller.dart';
-import 'package:flutter_task_manager/feature/controllers/validation/validation_controller.dart';
 import 'package:flutter_task_manager/feature/views/screens/error/error_screen.dart';
 import 'package:flutter_task_manager/feature/views/screens/login/widgets/sign_in_card.dart';
 import 'package:get/get.dart';
@@ -44,7 +43,6 @@ class LoginScreen extends GetResponsiveWidget<ThemeController> {
                         ),
                         onPressed: () {
                           localizationController.changeLocale();
-                          Get.find<ValidationController>().validateAll();
                         },
                       ),
                     ),
@@ -75,7 +73,7 @@ class LoginScreen extends GetResponsiveWidget<ThemeController> {
                           src: 'assets/3d/shiba.glb',
                         ),
                       ),
-                      SignInCard(),
+                      const SignInCard(),
                     ],
                   ),
                 ),

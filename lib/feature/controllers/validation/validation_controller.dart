@@ -32,9 +32,9 @@ class ValidationController extends GetxController {
 
   void validateEmail() {
     if (email.isEmpty) {
-      _emailError.value = LangKeys.emailIsRequired.tr;
+      _emailError.value = LangKeys.emailIsRequired;
     } else if (!GetUtils.isEmail(email)) {
-      _emailError.value = LangKeys.invalidEmail.tr;
+      _emailError.value = LangKeys.invalidEmail;
     } else {
       _isEmailValid.value = true;
     }
@@ -43,9 +43,9 @@ class ValidationController extends GetxController {
 
   void validatePassword() {
     if (password.isEmpty) {
-      _passwordError.value = LangKeys.passwordIsRequired.tr;
+      _passwordError.value = LangKeys.passwordIsRequired;
     } else if (password.length < 6) {
-      _passwordError.value = LangKeys.passwordMustBeAtLeast6Characters.tr;
+      _passwordError.value = LangKeys.passwordMustBeAtLeast6Characters;
     } else {
       _isPasswordValid.value = true;
     }

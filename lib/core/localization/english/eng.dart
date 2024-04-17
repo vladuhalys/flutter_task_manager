@@ -16,5 +16,6 @@ abstract class English {
     'password': 'Password',
     'login': 'Login',
     'welcome_back': 'Welcome back!',
+    'login_with_social_media': 'Login with social media:',
   };
 }

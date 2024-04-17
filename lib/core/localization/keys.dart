@@ -16,4 +16,5 @@ abstract class LangKeys {
   static const String password = 'password';
   static const String login = 'login';
   static const String welcomeBack = 'welcome_back';
+  static const String loginWithSocialMedia = 'login_with_social_media';
 }
