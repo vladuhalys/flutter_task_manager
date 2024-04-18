@@ -23,6 +23,8 @@ dependencies:
   model_viewer_plus: ^1.7.2
   lottie: ^3.1.0
   connectivity_plus: ^6.0.1
+  flutter_dotenv: ^5.1.0
+
 
 dev_dependencies:
   flutter_test:
@@ -36,3 +38,4 @@ flutter:
   assets:
   - assets/animations/error_img.json
   - assets/3d/shiba.glb
+  - lib/core/const/.env

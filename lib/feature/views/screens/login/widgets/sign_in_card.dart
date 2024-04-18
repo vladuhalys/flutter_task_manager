@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_task_manager/core/localization/keys.dart';
 import 'package:flutter_task_manager/core/theme/app_colors/app_colors.dart';
 import 'package:flutter_task_manager/core/theme/theme_controller.dart';
+import 'package:flutter_task_manager/feature/controllers/supabase/supabase_controller.dart';
 import 'package:flutter_task_manager/feature/controllers/validation/validation_controller.dart';
 import 'package:flutter_task_manager/feature/views/widgets/buttons/app_elevated_gradient_btn.dart';
 import 'package:flutter_task_manager/feature/views/widgets/buttons/app_outline_icon_button.dart';
@@ -69,6 +70,12 @@ class SignInCard extends GetWidget<ThemeController> {
                   text: LangKeys.login.tr,
                   onTap: () {
                     validationController.validateAll();
+                    if (validationController.isEmailValid &&
+                        validationController.isPasswordValid) {
+                      Get.find<SupabaseController>().signIn(
+                          validationController.email,
+                          validationController.password);
+                    }
                   },
                   width: Get.mediaQuery.size.width,
                   height: 50,
@@ -94,7 +101,9 @@ class SignInCard extends GetWidget<ThemeController> {
                               fontSize: 20,
                             ),
                           ),
-                          onTap: () {}),
+                          onTap: () async {
+                            await Get.find<SupabaseController>().signInWithGoogle();
+                          }),
                     ),
                     const SizedBox(width: 20),
                     Expanded(
@@ -107,7 +116,9 @@ class SignInCard extends GetWidget<ThemeController> {
                               fontSize: 20,
                             ),
                           ),
-                          onTap: () {}),
+                          onTap: () {
+                            Get.find<SupabaseController>().signInWithGitHub();
+                          }),
                     ),
                     const SizedBox(width: 20),
                     Expanded(
@@ -120,7 +131,9 @@ class SignInCard extends GetWidget<ThemeController> {
                               fontSize: 20,
                             ),
                           ),
-                          onTap: () {}),
+                          onTap: () {
+                            Get.find<SupabaseController>().signInWithGitLab();
+                          }),
                     ),
                   ],
                 ),
