@@ -29,7 +29,6 @@ class Application extends GetWidget {
         getPages: [
           GetPage(name: AppRouter.home, page: () => const HomeScreen()),
           GetPage(name: AppRouter.login, page: () => LoginScreen()),
-          GetPage(name: AppRouter.register, page: () => const RegisterScreen()),
           GetPage(name: AppRouter.authRout, page: () => const AuthRoutScreen()),
           GetPage(
               name: AppRouter.error,

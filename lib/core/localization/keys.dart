@@ -6,6 +6,10 @@ abstract class LangKeys {
   static const String passwordIsRequired = 'password_is_required';
   static const String passwordMustBeAtLeast6Characters =
       'password_must_be_at_least_6_characters';
+  static const String confirmPasswordIsRequired =
+      'confirm_password_is_required';
+  static const String passwordsDoNotMatch = 'passwords_do_not_match';
+  static const String invalidConfirmPassword = 'invalid_confirm_password';
 
   //Warning messages
 
@@ -15,6 +19,13 @@ abstract class LangKeys {
   static const String email = 'email';
   static const String password = 'password';
   static const String login = 'login';
+  static const String register = 'register';
+  static const String confirmPass = 'confirm_password';
   static const String welcomeBack = 'welcome_back';
   static const String loginWithSocialMedia = 'login_with_social_media';
+  static const String haveAccount = 'have_account';
+  static const String haveNotAccount = 'have_not_account';
+  static const String success = 'success';
+  static const String checkEmailForConfirmation = 'checkEmailForConfirmation';
+  static const String ok = 'ok';
 }

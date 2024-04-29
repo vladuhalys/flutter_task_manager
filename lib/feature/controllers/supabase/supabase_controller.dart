@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_task_manager/core/const/const.dart';
-import 'package:flutter_task_manager/core/router/router.dart';
+import 'package:flutter_task_manager/core/localization/keys.dart';
+import 'package:flutter_task_manager/feature/controllers/validation/validation_controller.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -8,8 +10,26 @@ class SupabaseController extends GetxController {
   bool get isAuth => supabase.value.auth.currentUser != null;
 
   Future<void> signIn(String email, String password) async {
-    await supabase.value.auth
-        .signInWithPassword(email: email, password: password);
+    try {
+      await supabase.value.auth
+          .signInWithPassword(email: email, password: password);
+    } catch (e) {
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Error'),
+          content: Text(e.toString()),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+    update();
   }
 
   Future<void> signInWithGoogle() async {
@@ -18,6 +38,7 @@ class SupabaseController extends GetxController {
       authScreenLaunchMode: LaunchMode.inAppWebView,
       redirectTo: AppConst.redirectedUrl,
     );
+    update();
   }
 
   Future<void> signInWithGitHub() async {
@@ -26,6 +47,7 @@ class SupabaseController extends GetxController {
       authScreenLaunchMode: LaunchMode.inAppWebView,
       redirectTo: AppConst.redirectedUrl,
     );
+    update();
   }
 
   Future<void> signInWithGitLab() async {
@@ -34,18 +56,37 @@ class SupabaseController extends GetxController {
       authScreenLaunchMode: LaunchMode.inAppWebView,
       redirectTo: AppConst.redirectedUrl,
     );
+    update();
   }
 
   Future<void> signOut() async {
     await supabase.value.auth.signOut();
+    update();
   }
 
   Future<void> signUp(String email, String password) async {
     await supabase.value.auth.signUp(email: email, password: password);
-    if (supabase.value.auth.currentUser == null) {
-      Get.snackbar('Error', 'Sign in failed');
-    } else {
-      Get.offNamed(AppRouter.home);
-    }
+    Get.dialog(
+      AlertDialog(
+        title: Text(
+          LangKeys.success.tr,
+          style: Get.context!.textTheme.headlineMedium!.copyWith(fontSize: 35),
+        ),
+        content: Text(LangKeys.checkEmailForConfirmation.tr,
+            style: Get.context!.textTheme.titleMedium!.copyWith(fontSize: 25)),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Get.find<ValidationController>().changeForm();
+              Get.back();
+            },
+            child: Text(LangKeys.ok.tr,
+                style:
+                    Get.context!.textTheme.titleMedium!.copyWith(fontSize: 25)),
+          ),
+        ],
+      ),
+    );
+    update();
   }
 }

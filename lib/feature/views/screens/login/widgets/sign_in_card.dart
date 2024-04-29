@@ -21,14 +21,17 @@ class SignInCard extends GetWidget<ThemeController> {
     return GetBuilder<ValidationController>(builder: (validationController) {
       return AppGradientBorderCard(
         width: context.width * 0.4,
-        height: context.height * 0.7,
+        height: context.height * 0.8,
         gradients: [AppColors.btnGradientStart, AppColors.btnGradientEnd],
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 10.0),
-              child: Text(LangKeys.login.tr,
+              child: Text(
+                  (validationController.isRegistrForm)
+                      ? LangKeys.register.tr
+                      : LangKeys.login.tr,
                   style: Theme.of(context)
                       .textTheme
                       .headlineMedium!
@@ -52,10 +55,29 @@ class SignInCard extends GetWidget<ThemeController> {
                       validationController.onEmailChanged(value);
                     }),
                 AppErrorText(errorText: validationController.emailError.tr),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 AppGradientBorderTextField(
+                    suffixIcon: Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: IconButton(
+                        onPressed: () {
+                          validationController.changeShowPassword();
+                        },
+                        icon: (validationController.obscurePassword.value)
+                            ? Icon(
+                                EvaIcons.eye_off,
+                                size: 30,
+                                color: Theme.of(context).iconTheme.color,
+                              )
+                            : Icon(
+                                EvaIcons.eye,
+                                size: 30,
+                                color: Theme.of(context).iconTheme.color,
+                              ),
+                      ),
+                    ),
                     hintText: LangKeys.password.tr,
-                    obscureText: true,
+                    obscureText: validationController.obscurePassword.value,
                     prefixIcon: Icon(
                       EvaIcons.lock,
                       size: 30,
@@ -65,16 +87,68 @@ class SignInCard extends GetWidget<ThemeController> {
                       validationController.onPasswordChanged(value);
                     }),
                 AppErrorText(errorText: validationController.passwordError.tr),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
+                (validationController.isRegistrForm)
+                    ? Column(
+                        children: [
+                          AppGradientBorderTextField(
+                              suffixIcon: Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: IconButton(
+                                  onPressed: () {
+                                    validationController
+                                        .changeShowConfirmPassword();
+                                  },
+                                  icon: (validationController
+                                          .obscureConfirmPassword.value)
+                                      ? Icon(
+                                          EvaIcons.eye_off,
+                                          size: 30,
+                                          color:
+                                              Theme.of(context).iconTheme.color,
+                                        )
+                                      : Icon(
+                                          EvaIcons.eye,
+                                          size: 30,
+                                          color:
+                                              Theme.of(context).iconTheme.color,
+                                        ),
+                                ),
+                              ),
+                              obscureText: validationController
+                                  .obscureConfirmPassword.value,
+                              hintText: LangKeys.confirmPass.tr,
+                              prefixIcon: Icon(
+                                EvaIcons.lock_outline,
+                                size: 30,
+                                color: Theme.of(context).iconTheme.color,
+                              ),
+                              onChanged: (value) {
+                                validationController
+                                    .onConfirmPasswordChanged(value);
+                              }),
+                          AppErrorText(
+                              errorText:
+                                  validationController.confirmPasswordError.tr),
+                          const SizedBox(height: 20),
+                        ],
+                      )
+                    : Container(),
                 AppElevatedGradientButton(
-                  text: LangKeys.login.tr,
+                  text: (validationController.isRegistrForm)
+                      ? LangKeys.register.tr
+                      : LangKeys.login.tr,
                   onTap: () {
                     validationController.validateAll();
                     if (validationController.isEmailValid &&
                         validationController.isPasswordValid) {
-                      Get.find<SupabaseController>().signIn(
-                          validationController.email,
-                          validationController.password);
+                      (validationController.isRegistrForm)
+                          ? Get.find<SupabaseController>().signUp(
+                              validationController.email,
+                              validationController.password)
+                          : Get.find<SupabaseController>().signIn(
+                              validationController.email,
+                              validationController.password);
                     }
                   },
                   width: Get.mediaQuery.size.width,
@@ -102,7 +176,8 @@ class SignInCard extends GetWidget<ThemeController> {
                             ),
                           ),
                           onTap: () async {
-                            await Get.find<SupabaseController>().signInWithGoogle();
+                            await Get.find<SupabaseController>()
+                                .signInWithGoogle();
                           }),
                     ),
                     const SizedBox(width: 20),
@@ -137,6 +212,27 @@ class SignInCard extends GetWidget<ThemeController> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 20),
+                Text(
+                    (validationController.isRegistrForm)
+                        ? LangKeys.haveAccount.tr
+                        : LangKeys.haveNotAccount.tr,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(fontSize: 15)),
+                const SizedBox(height: 20),
+                TextButton(
+                    onPressed: () => validationController.changeForm(),
+                    child: Text(
+                        (validationController.isRegistrForm)
+                            ? LangKeys.login.tr
+                            : LangKeys.register.tr,
+                        style:
+                            Theme.of(context).textTheme.titleMedium!.copyWith(
+                                  fontSize: 20,
+                                  color: Theme.of(context).iconTheme.color,
+                                ))),
               ],
             ),
           ],
