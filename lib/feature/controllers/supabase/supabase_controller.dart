@@ -31,7 +31,6 @@ class SupabaseController extends GetxController {
     }
     update();
   }
-
   Future<void> signInWithGoogle() async {
     await supabase.value.auth.signInWithOAuth(
       OAuthProvider.google,
@@ -40,7 +39,6 @@ class SupabaseController extends GetxController {
     );
     update();
   }
-
   Future<void> signInWithGitHub() async {
     await supabase.value.auth.signInWithOAuth(
       OAuthProvider.github,
@@ -49,7 +47,6 @@ class SupabaseController extends GetxController {
     );
     update();
   }
-
   Future<void> signInWithGitLab() async {
     await supabase.value.auth.signInWithOAuth(
       OAuthProvider.gitlab,
@@ -58,12 +55,10 @@ class SupabaseController extends GetxController {
     );
     update();
   }
-
   Future<void> signOut() async {
     await supabase.value.auth.signOut();
     update();
   }
-
   Future<void> signUp(String email, String password) async {
     await supabase.value.auth.signUp(email: email, password: password);
     Get.dialog(
@@ -89,4 +84,7 @@ class SupabaseController extends GetxController {
     );
     update();
   }
+
+  
 }
+
