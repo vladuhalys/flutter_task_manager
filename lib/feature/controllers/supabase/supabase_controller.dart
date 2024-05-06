@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_task_manager/core/const/const.dart';
 import 'package:flutter_task_manager/core/localization/keys.dart';
 import 'package:flutter_task_manager/feature/controllers/validation/validation_controller.dart';
+import 'package:flutter_task_manager/feature/views/widgets/dialogs/error_supabase.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -31,6 +32,7 @@ class SupabaseController extends GetxController {
     }
     update();
   }
+
   Future<void> signInWithGoogle() async {
     await supabase.value.auth.signInWithOAuth(
       OAuthProvider.google,
@@ -39,6 +41,7 @@ class SupabaseController extends GetxController {
     );
     update();
   }
+
   Future<void> signInWithGitHub() async {
     await supabase.value.auth.signInWithOAuth(
       OAuthProvider.github,
@@ -47,6 +50,7 @@ class SupabaseController extends GetxController {
     );
     update();
   }
+
   Future<void> signInWithGitLab() async {
     await supabase.value.auth.signInWithOAuth(
       OAuthProvider.gitlab,
@@ -55,10 +59,12 @@ class SupabaseController extends GetxController {
     );
     update();
   }
+
   Future<void> signOut() async {
     await supabase.value.auth.signOut();
     update();
   }
+
   Future<void> signUp(String email, String password) async {
     await supabase.value.auth.signUp(email: email, password: password);
     Get.dialog(
@@ -85,6 +91,23 @@ class SupabaseController extends GetxController {
     update();
   }
 
-  
+  Future<void> setCurrentAuthToTableUser() async {
+    try {
+      await supabase.value.from('users').insert({
+        'email': supabase.value.auth.currentUser!.email,
+      });
+    } on PostgrestException catch (error) {
+      Get.dialog(supabaseErrorDialog(error));
+    }
+  }
+  Future<void> createProject(String name) async {
+    try {
+      await supabase.value.from('projects').insert({
+        'project_name': name,
+        'owner_id': supabase.value.auth.currentUser!.id,
+      });
+    } on PostgrestException catch (error) {
+      Get.dialog(supabaseErrorDialog(error));
+    }
+  }
 }
-

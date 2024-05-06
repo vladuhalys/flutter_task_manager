@@ -11,6 +11,8 @@ abstract class English {
     'password_is_required': 'Password is required',
     'password_must_be_at_least_6_characters':
         'Password must be at least 6 characters',
+
+    'error_from_supabase': 'Supabase error',
     //Warning messages
 
     //Info messages
@@ -20,6 +22,7 @@ abstract class English {
     'confirm_password': 'Confirm Password',
     'login': 'Login',
     'register': 'Register',
+    'sign_out': 'Sign out',
     'welcome_back': 'Welcome',
     'login_with_social_media': 'Login with social media:',
     'have_account': 'Already have an account?',
@@ -27,5 +30,9 @@ abstract class English {
     'success': 'Success',
     'checkEmailForConfirmation': 'Check your email for confirmation',
     'ok': 'OK',
+    'create_project': 'Create Project',
+    'create_new_project': 'Create New Project',
+    'project_name': 'Project Name',
+    'cancel': 'Cancel',
   };
 }

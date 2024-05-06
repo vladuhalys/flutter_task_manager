@@ -11,6 +11,8 @@ abstract class Ukrainian {
     'password_is_required': 'Пароль обов\'язковий',
     'password_must_be_at_least_6_characters':
         'Пароль повинен містити принаймні 6 символів',
+
+    'error_from_supabase': 'Помилка Supabase',
     //Warning messages
 
     //Info messages
@@ -20,6 +22,7 @@ abstract class Ukrainian {
     'confirm_password': 'Підтвердити пароль',
     'login': 'Увійти',
     'register': 'Зареєструватися',
+    'sign_out': 'Вийти',
     'welcome_back': 'Ласкаво просимо',
     'login_with_social_media': 'Увійти через соціальні мереж:',
     'have_account': 'У вас є акаунт?',
@@ -28,5 +31,9 @@ abstract class Ukrainian {
     'checkEmailForConfirmation':
         'Перевірте свою електронну пошту для підтвердження',
     'ok': 'OK',
+    'create_project': 'Створити проект',
+    'create_new_project': 'Створити новий проект',
+    'project_name': 'Назва проекту',
+    'cancel': 'Скасувати',
   };
 }

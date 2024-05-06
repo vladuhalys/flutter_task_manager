@@ -11,6 +11,8 @@ abstract class LangKeys {
   static const String passwordsDoNotMatch = 'passwords_do_not_match';
   static const String invalidConfirmPassword = 'invalid_confirm_password';
 
+  static const String errorFromSupabase = 'error_from_supabase';
+
   //Warning messages
 
   //Info messages
@@ -20,6 +22,7 @@ abstract class LangKeys {
   static const String password = 'password';
   static const String login = 'login';
   static const String register = 'register';
+  static const String signOut = 'sign_out';
   static const String confirmPass = 'confirm_password';
   static const String welcomeBack = 'welcome_back';
   static const String loginWithSocialMedia = 'login_with_social_media';
@@ -28,4 +31,8 @@ abstract class LangKeys {
   static const String success = 'success';
   static const String checkEmailForConfirmation = 'checkEmailForConfirmation';
   static const String ok = 'ok';
+  static const String createProject = 'create_project';
+  static const String createNewProject = 'create_new_project';
+  static const String projectName = 'project_name';
+  static const String cancel = 'cancel';
 }

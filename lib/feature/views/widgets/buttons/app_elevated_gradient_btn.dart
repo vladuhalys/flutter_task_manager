@@ -9,12 +9,14 @@ class AppElevatedGradientButton extends StatelessWidget {
       required this.text,
       required this.onTap,
       required this.width,
-      required this.height});
+      required this.height,
+      this.textStyle});
 
   final String text;
   final Function() onTap;
   final double width;
   final double height;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +27,11 @@ class AppElevatedGradientButton extends StatelessWidget {
       borderRadius: 20,
       onPressed: onTap,
       text: text,
-      textStyle: Get.textTheme.headlineMedium!.copyWith(
-        fontWeight: FontWeight.bold,
-        fontSize: 20,
-      ),
+      textStyle: textStyle ??
+          Get.textTheme.headlineMedium!.copyWith(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
     );
   }
 }
