@@ -14,6 +14,7 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
   @override
   Widget build(BuildContext context) {
+    Get.find<SupabaseController>().setCurrentAuthToTableUser();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -126,6 +127,8 @@ class HomeScreen extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
+                            Get.find<SupabaseController>()
+                                .createProject(projectNameController.text);
                             Get.back();
                           },
                           child: Text(

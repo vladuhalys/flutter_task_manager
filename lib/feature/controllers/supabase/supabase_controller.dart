@@ -93,18 +93,38 @@ class SupabaseController extends GetxController {
 
   Future<void> setCurrentAuthToTableUser() async {
     try {
+      if (supabase.value.auth.currentUser == null) return;
+      //Check if user already exists in the table
+      final response = await supabase.value
+          .from('users')
+          .select()
+          .eq('user_name', supabase.value.auth.currentUser!.email!);
+      if (response.isNotEmpty) {
+        // throw const PostgrestException(
+        //   message: 'User already exists',
+        // );
+      }
       await supabase.value.from('users').insert({
-        'email': supabase.value.auth.currentUser!.email,
+        'user_name': supabase.value.auth.currentUser!.email,
+        'role_id': 1,
       });
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
     }
   }
+
+  int getIdByUserName(String userName) {
+    final data =
+        supabase.value.from('users').select('id').eq('user_name', userName);
+    return int.parse('0');
+  }
+
   Future<void> createProject(String name) async {
+    getIdByUserName(supabase.value.auth.currentUser!.email!);
     try {
       await supabase.value.from('projects').insert({
         'project_name': name,
-        'owner_id': supabase.value.auth.currentUser!.id,
+        'owner_id': getIdByUserName(supabase.value.auth.currentUser!.email!),
       });
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
