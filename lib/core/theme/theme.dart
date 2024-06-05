@@ -6,7 +6,7 @@ class AppTheme {
   static final light = ThemeData(
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
-        overlayColor: MaterialStateProperty.all(
+        overlayColor: WidgetStateProperty.all(
           Colors.transparent,
         ),
       ),
@@ -64,14 +64,14 @@ class AppTheme {
   static final dark = ThemeData(
     iconButtonTheme: IconButtonThemeData(
       style: ButtonStyle(
-        overlayColor: MaterialStateProperty.all(
+        overlayColor: WidgetStateProperty.all(
           Colors.transparent,
         ),
       ),
     ),
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
-        overlayColor: MaterialStateProperty.all(
+        overlayColor: WidgetStateProperty.all(
           Colors.transparent,
         ),
       ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_task_manager/core/const/const.dart';
 import 'package:flutter_task_manager/core/localization/keys.dart';
 import 'package:flutter_task_manager/feature/controllers/validation/validation_controller.dart';
+import 'package:flutter_task_manager/feature/models/project.dart';
+import 'package:flutter_task_manager/feature/models/user.dart';
 import 'package:flutter_task_manager/feature/views/widgets/dialogs/error_supabase.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -9,6 +11,44 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class SupabaseController extends GetxController {
   Rx<SupabaseClient> supabase = Supabase.instance.client.obs;
   bool get isAuth => supabase.value.auth.currentUser != null;
+  final currentUser = const ModelUser(id: 0, userName: '', roleId: 0).obs;
+
+  final projects = <Project>[].obs;
+
+  //Get all projects
+  Future<void> getProjects() async {
+    try {
+      final response = await supabase.value.from('projects').select();
+      projects.value = response.map((e) => Project.fromJson(e)).toList();
+    } catch (e) {
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Error'),
+          content: Text(e.toString()),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+    update();
+  }
+
+  //delete project
+  Future<void> deleteProject(int id) async {
+    try {
+      await supabase.value.from('projects').delete().eq('id', id);
+      await getProjects();
+    } on PostgrestException catch (error) {
+      Get.dialog(supabaseErrorDialog(error));
+    }
+    update();
+  }
 
   Future<void> signIn(String email, String password) async {
     try {
@@ -99,35 +139,36 @@ class SupabaseController extends GetxController {
           .from('users')
           .select()
           .eq('user_name', supabase.value.auth.currentUser!.email!);
+      currentUser.value = ModelUser(
+          id: response[0]['id'],
+          userName: response[0]['user_name'],
+          roleId: response[0]['role_id']);
       if (response.isNotEmpty) {
         // throw const PostgrestException(
         //   message: 'User already exists',
         // );
+      } else {
+        await supabase.value.from('users').insert({
+          'user_name': supabase.value.auth.currentUser!.email,
+          'role_id': 1,
+        });
       }
-      await supabase.value.from('users').insert({
-        'user_name': supabase.value.auth.currentUser!.email,
-        'role_id': 1,
-      });
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
     }
-  }
-
-  int getIdByUserName(String userName) {
-    final data =
-        supabase.value.from('users').select('id').eq('user_name', userName);
-    return int.parse('0');
+    update();
   }
 
   Future<void> createProject(String name) async {
-    getIdByUserName(supabase.value.auth.currentUser!.email!);
     try {
       await supabase.value.from('projects').insert({
         'project_name': name,
-        'owner_id': getIdByUserName(supabase.value.auth.currentUser!.email!),
+        'owner_id': currentUser.value.id,
       });
+      await getProjects();
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
     }
+    update();
   }
 }

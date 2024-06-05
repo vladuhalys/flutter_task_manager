@@ -35,5 +35,7 @@ abstract class Ukrainian {
     'create_new_project': 'Створити новий проект',
     'project_name': 'Назва проекту',
     'cancel': 'Скасувати',
+    'no_project': 'Немає проекту',
+    'project': 'Проект',
   };
 }

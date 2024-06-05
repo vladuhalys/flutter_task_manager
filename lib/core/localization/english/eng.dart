@@ -34,5 +34,7 @@ abstract class English {
     'create_new_project': 'Create New Project',
     'project_name': 'Project Name',
     'cancel': 'Cancel',
+    'no_project': 'No project',
+    'project': 'Project',
   };
 }

@@ -35,4 +35,6 @@ abstract class LangKeys {
   static const String createNewProject = 'create_new_project';
   static const String projectName = 'project_name';
   static const String cancel = 'cancel';
+  static const String noProject = 'no_project';
+  static const String project = 'project';
 }
