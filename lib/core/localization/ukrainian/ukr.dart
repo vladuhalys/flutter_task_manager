@@ -37,5 +37,7 @@ abstract class Ukrainian {
     'cancel': 'Скасувати',
     'no_project': 'Немає проекту',
     'project': 'Проект',
+    'cretae_table': 'Створити Таблицю',
+    'table_name': 'Назва таблиці',
   };
 }

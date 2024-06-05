@@ -14,6 +14,7 @@ class SupabaseController extends GetxController {
   final currentUser = const ModelUser(id: 0, userName: '', roleId: 0).obs;
 
   final projects = <Project>[].obs;
+  final currentProject = const Project(id: 0, projectName: '', ownerId: 0).obs;
 
   //Get all projects
   Future<void> getProjects() async {

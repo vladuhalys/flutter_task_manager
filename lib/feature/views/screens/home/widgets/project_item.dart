@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_manager/core/localization/keys.dart';
+import 'package:flutter_task_manager/core/router/router.dart';
 import 'package:flutter_task_manager/core/theme/app_colors/app_colors.dart';
 import 'package:flutter_task_manager/feature/controllers/supabase/supabase_controller.dart';
 import 'package:flutter_task_manager/feature/models/project.dart';
@@ -15,41 +16,47 @@ class ProjectItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppGradientBorderCard(
-      width: double.infinity,
-      height: 80.0,
-      gradients: [AppColors.btnGradientStart, AppColors.btnGradientEnd],
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            '${LangKeys.project.tr} "${project.projectName}"',
-            style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                  color: Theme.of(context).iconTheme.color,
-                  fontSize: 20,
+    return InkWell(
+      onTap: () {
+        Get.find<SupabaseController>().currentProject.value = project;
+        Get.toNamed(AppRouter.project);
+      },
+      child: AppGradientBorderCard(
+        width: double.infinity,
+        height: 80.0,
+        gradients: [AppColors.btnGradientStart, AppColors.btnGradientEnd],
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '${LangKeys.project.tr} "${project.projectName}"',
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    color: Theme.of(context).iconTheme.color,
+                    fontSize: 20,
+                  ),
+            ),
+            Row(
+              children: [
+                Text(
+                  user.userName,
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Theme.of(context).iconTheme.color,
+                        fontSize: 20,
+                      ),
                 ),
-          ),
-          Row(
-            children: [
-              Text(
-                user.userName,
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      color: Theme.of(context).iconTheme.color,
-                      fontSize: 20,
-                    ),
-              ),
-              const SizedBox(width: 20.0),
-              InkWell(
-                onTap: () {
-                  Get.find<SupabaseController>().deleteProject(project.id);
-                },
-                child: Icon(HeroIcons.x_circle,
-                    size: 30.0, color: AppColors.textError),
-              ),
-            ],
-          ),
-        ],
+                const SizedBox(width: 20.0),
+                InkWell(
+                  onTap: () {
+                    Get.find<SupabaseController>().deleteProject(project.id);
+                  },
+                  child: Icon(HeroIcons.x_circle,
+                      size: 30.0, color: AppColors.textError),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

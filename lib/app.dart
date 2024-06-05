@@ -5,6 +5,7 @@ import 'package:flutter_task_manager/core/router/router.dart';
 import 'package:flutter_task_manager/core/theme/theme.dart';
 import 'package:flutter_task_manager/feature/views/screens/error/error_screen.dart';
 import 'package:flutter_task_manager/feature/views/screens/export_screen.dart';
+import 'package:flutter_task_manager/feature/views/screens/project/project_screen.dart';
 import 'package:flutter_task_manager/feature/views/screens/screen.dart';
 
 import 'package:get/get.dart';
@@ -30,6 +31,7 @@ class Application extends GetWidget {
           GetPage(name: AppRouter.home, page: () => const HomeScreen()),
           GetPage(name: AppRouter.login, page: () => LoginScreen()),
           GetPage(name: AppRouter.authRout, page: () => const AuthRoutScreen()),
+          GetPage(name: AppRouter.project, page: () => const ProjectScreen()),
           GetPage(
               name: AppRouter.error,
               page: () => const ErrorScreen(errorText: '')),

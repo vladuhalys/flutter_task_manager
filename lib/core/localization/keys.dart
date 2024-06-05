@@ -37,4 +37,6 @@ abstract class LangKeys {
   static const String cancel = 'cancel';
   static const String noProject = 'no_project';
   static const String project = 'project';
+  static const String createTable = 'cretae_table';
+  static const String tableName = 'table_name';
 }

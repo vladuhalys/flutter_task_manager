@@ -7,4 +7,5 @@ abstract class AppRouter {
   static const String about = '/about';
   static const String error = '/error';
   static const String authRout = '/authRout';
+  static const String project = '/project';
 }

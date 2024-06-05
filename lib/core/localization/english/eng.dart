@@ -36,5 +36,7 @@ abstract class English {
     'cancel': 'Cancel',
     'no_project': 'No project',
     'project': 'Project',
+    'cretae_table': 'Create Table',
+    'table_name': 'Table Name',
   };
 }
