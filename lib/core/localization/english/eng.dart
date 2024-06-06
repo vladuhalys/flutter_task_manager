@@ -13,6 +13,8 @@ abstract class English {
         'Password must be at least 6 characters',
 
     'error_from_supabase': 'Supabase error',
+    'error_table': 'Table error',
+    'table_already_exists': 'Table already exists',
     //Warning messages
 
     //Info messages
@@ -38,5 +40,6 @@ abstract class English {
     'project': 'Project',
     'cretae_table': 'Create Table',
     'table_name': 'Table Name',
+    'no_table': 'No table',
   };
 }

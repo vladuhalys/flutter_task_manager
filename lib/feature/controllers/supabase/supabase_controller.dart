@@ -3,6 +3,7 @@ import 'package:flutter_task_manager/core/const/const.dart';
 import 'package:flutter_task_manager/core/localization/keys.dart';
 import 'package:flutter_task_manager/feature/controllers/validation/validation_controller.dart';
 import 'package:flutter_task_manager/feature/models/project.dart';
+import 'package:flutter_task_manager/feature/models/table.dart';
 import 'package:flutter_task_manager/feature/models/user.dart';
 import 'package:flutter_task_manager/feature/views/widgets/dialogs/error_supabase.dart';
 import 'package:get/get.dart';
@@ -12,9 +13,83 @@ class SupabaseController extends GetxController {
   Rx<SupabaseClient> supabase = Supabase.instance.client.obs;
   bool get isAuth => supabase.value.auth.currentUser != null;
   final currentUser = const ModelUser(id: 0, userName: '', roleId: 0).obs;
-
   final projects = <Project>[].obs;
   final currentProject = const Project(id: 0, projectName: '', ownerId: 0).obs;
+  final tablesForProject = <ModelTable>[].obs;
+
+  Future<void> getTables() async {
+    try {
+      final response = await supabase.value
+          .from('tables')
+          .select()
+          .eq('project_id', currentProject.value.id);
+      tablesForProject.value =
+          response.map((e) => ModelTable.fromJson(e)).toList();
+      update();
+    } on PostgrestException catch (error) {
+      Get.dialog(supabaseErrorDialog(error));
+    }
+  }
+
+  Future<void> setCurrentProject(int id) async {
+    final response =
+        await supabase.value.from('projects').select().eq('id', id);
+    currentProject.value = Project.fromJson(response[0]);
+    update();
+  }
+
+  Future<void> createTable(String name) async {
+    try {
+      final response =
+          await supabase.value.from('tables').select().eq('table_name', name);
+      if (response.isEmpty) {
+        await supabase.value.from('tables').insert({
+          'table_name': name,
+          'project_id': currentProject.value.id,
+        });
+        update();
+      } else {
+        Get.dialog(
+          AlertDialog(
+            backgroundColor: Get.context?.theme.scaffoldBackgroundColor,
+            title: Text(
+              LangKeys.errorTable.tr,
+              style:
+                  Get.context!.textTheme.headlineMedium!.copyWith(fontSize: 35),
+            ),
+            content: Text(LangKeys.tableAlreadyExists.tr,
+                style:
+                    Get.context!.textTheme.titleMedium!.copyWith(fontSize: 25)),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: Text(LangKeys.ok.tr,
+                    style: Get.context!.textTheme.titleMedium!
+                        .copyWith(fontSize: 25)),
+              ),
+            ],
+          ),
+        );
+      }
+    } on PostgrestException catch (error) {
+      Get.dialog(supabaseErrorDialog(error));
+    }
+  }
+
+  Future<void> createProject(String name) async {
+    try {
+      await supabase.value.from('projects').insert({
+        'project_name': name,
+        'owner_id': currentUser.value.id,
+      });
+      await getProjects();
+    } on PostgrestException catch (error) {
+      Get.dialog(supabaseErrorDialog(error));
+    }
+    update();
+  }
 
   //Get all projects
   Future<void> getProjects() async {
@@ -24,6 +99,7 @@ class SupabaseController extends GetxController {
     } catch (e) {
       Get.dialog(
         AlertDialog(
+          backgroundColor: Get.context?.theme.scaffoldBackgroundColor,
           title: const Text('Error'),
           content: Text(e.toString()),
           actions: [
@@ -59,6 +135,7 @@ class SupabaseController extends GetxController {
       Get.dialog(
         AlertDialog(
           title: const Text('Error'),
+          backgroundColor: Get.context?.theme.scaffoldBackgroundColor,
           content: Text(e.toString()),
           actions: [
             TextButton(
@@ -110,6 +187,7 @@ class SupabaseController extends GetxController {
     await supabase.value.auth.signUp(email: email, password: password);
     Get.dialog(
       AlertDialog(
+        backgroundColor: Get.context?.theme.scaffoldBackgroundColor,
         title: Text(
           LangKeys.success.tr,
           style: Get.context!.textTheme.headlineMedium!.copyWith(fontSize: 35),
@@ -154,19 +232,6 @@ class SupabaseController extends GetxController {
           'role_id': 1,
         });
       }
-    } on PostgrestException catch (error) {
-      Get.dialog(supabaseErrorDialog(error));
-    }
-    update();
-  }
-
-  Future<void> createProject(String name) async {
-    try {
-      await supabase.value.from('projects').insert({
-        'project_name': name,
-        'owner_id': currentUser.value.id,
-      });
-      await getProjects();
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
     }

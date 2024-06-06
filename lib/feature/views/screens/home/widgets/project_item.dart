@@ -16,48 +16,52 @@ class ProjectItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Get.find<SupabaseController>().currentProject.value = project;
-        Get.toNamed(AppRouter.project);
-      },
-      child: AppGradientBorderCard(
-        width: double.infinity,
-        height: 80.0,
-        gradients: [AppColors.btnGradientStart, AppColors.btnGradientEnd],
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              '${LangKeys.project.tr} "${project.projectName}"',
-              style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    color: Theme.of(context).iconTheme.color,
-                    fontSize: 20,
-                  ),
-            ),
-            Row(
+    return GetBuilder<SupabaseController>(
+      builder: (controller) {
+        return InkWell(
+          onTap: () {
+            controller.setCurrentProject(project.id);
+            Get.toNamed(AppRouter.project);
+          },
+          child: AppGradientBorderCard(
+            width: double.infinity,
+            height: 80.0,
+            gradients: [AppColors.btnGradientStart, AppColors.btnGradientEnd],
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  user.userName,
+                  '${LangKeys.project.tr} "${project.projectName}"',
                   style: Theme.of(context).textTheme.titleMedium!.copyWith(
                         color: Theme.of(context).iconTheme.color,
                         fontSize: 20,
                       ),
                 ),
-                const SizedBox(width: 20.0),
-                InkWell(
-                  onTap: () {
-                    Get.find<SupabaseController>().deleteProject(project.id);
-                  },
-                  child: Icon(HeroIcons.x_circle,
-                      size: 30.0, color: AppColors.textError),
+                Row(
+                  children: [
+                    Text(
+                      user.userName,
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                            color: Theme.of(context).iconTheme.color,
+                            fontSize: 20,
+                          ),
+                    ),
+                    const SizedBox(width: 20.0),
+                    InkWell(
+                      onTap: () {
+                        controller.deleteProject(project.id);
+                      },
+                      child: Icon(HeroIcons.x_circle,
+                          size: 30.0, color: AppColors.textError),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

@@ -7,7 +7,6 @@ class Project extends Equatable {
 
   const Project(
       {required this.id, required this.projectName, required this.ownerId});
-
   factory Project.fromJson(Map<String, dynamic> json) {
     return Project(
       id: json['id'] as int,

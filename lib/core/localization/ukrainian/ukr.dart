@@ -13,6 +13,8 @@ abstract class Ukrainian {
         'Пароль повинен містити принаймні 6 символів',
 
     'error_from_supabase': 'Помилка Supabase',
+    'error_table': 'Помилка таблиці',
+    'table_already_exists': 'Таблиця вже існує',
     //Warning messages
 
     //Info messages
@@ -39,5 +41,6 @@ abstract class Ukrainian {
     'project': 'Проект',
     'cretae_table': 'Створити Таблицю',
     'table_name': 'Назва таблиці',
+    'no_table': 'Немає таблиці',
   };
 }

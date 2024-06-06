@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 Widget supabaseErrorDialog(PostgrestException error) {
   return AlertDialog(
+    backgroundColor: Get.context?.theme.scaffoldBackgroundColor,
     title: Text(
       LangKeys.errorFromSupabase.tr,
       style: Get.context!.textTheme.headlineMedium!.copyWith(fontSize: 35),

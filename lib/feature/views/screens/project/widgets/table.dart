@@ -1,19 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_task_manager/feature/models/table.dart';
+import 'package:get/get_utils/src/extensions/export.dart';
 
 class TableWidget extends StatelessWidget {
-  const TableWidget({super.key});
+  const TableWidget({super.key, required this.table});
+
+  final ModelTable table;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 200.0,
-      height: 200.0,
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(15.0)),
-        color: Colors.white,
+      width: context.width * 0.25,
+      height: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+        border: Border.all(
+          color: Colors.blueAccent.withOpacity(0.5),
+          width: 2,
+        ),
       ),
       child: Column(
-        children: [],
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Text(
+              table.tableName,
+              style: context.theme.textTheme.labelMedium!.copyWith(
+                color: Theme.of(context).iconTheme.color,
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

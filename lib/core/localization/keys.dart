@@ -12,6 +12,8 @@ abstract class LangKeys {
   static const String invalidConfirmPassword = 'invalid_confirm_password';
 
   static const String errorFromSupabase = 'error_from_supabase';
+  static const String errorTable = 'error_table';
+  static const String tableAlreadyExists = 'table_already_exists';
 
   //Warning messages
 
@@ -39,4 +41,5 @@ abstract class LangKeys {
   static const String project = 'project';
   static const String createTable = 'cretae_table';
   static const String tableName = 'table_name';
+  static const String noTable = 'no_table';
 }

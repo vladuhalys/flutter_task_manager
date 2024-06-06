@@ -4,6 +4,7 @@ import 'package:flutter_task_manager/core/localization/keys.dart';
 import 'package:flutter_task_manager/core/router/router.dart';
 import 'package:flutter_task_manager/core/theme/theme_controller.dart';
 import 'package:flutter_task_manager/feature/controllers/supabase/supabase_controller.dart';
+import 'package:flutter_task_manager/feature/views/screens/project/widgets/table.dart';
 import 'package:flutter_task_manager/feature/views/widgets/buttons/app_outline_gradient_btn.dart';
 import 'package:flutter_task_manager/feature/views/widgets/text_fields/app_graient_border_textfield.dart';
 import 'package:get/get.dart';
@@ -15,8 +16,18 @@ class ProjectScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SupabaseController>(builder: (controller) {
+      controller.getTables();
       return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              EvaIcons.arrow_back,
+              color: context.theme.iconTheme.color,
+            ),
+            onPressed: () {
+              Get.back();
+            },
+          ),
           centerTitle: true,
           title: Text(
             controller.currentProject.value.projectName,
@@ -87,12 +98,11 @@ class ProjectScreen extends StatelessWidget {
                 width: 250,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    TextEditingController projectNameController =
+                    TextEditingController tableNameController =
                         TextEditingController();
                     Get.dialog(
                       AlertDialog(
-                        backgroundColor:
-                            Theme.of(context).scaffoldBackgroundColor,
+                        backgroundColor: context.theme.scaffoldBackgroundColor,
                         title: Text(
                           LangKeys.createTable.tr,
                           style: context.theme.textTheme.headlineMedium!
@@ -104,7 +114,7 @@ class ProjectScreen extends StatelessWidget {
                             width: context.width * 0.5,
                             child: AppGradientBorderTextField(
                               hintText: LangKeys.tableName.tr,
-                              controller: projectNameController,
+                              controller: tableNameController,
                               keyboardType: TextInputType.text,
                               prefixIcon: Icon(
                                 HeroIcons.table_cells,
@@ -126,8 +136,8 @@ class ProjectScreen extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () {
-                              Get.find<SupabaseController>()
-                                  .createProject(projectNameController.text);
+                              controller.createTable(tableNameController.text);
+                              controller.getTables();
                               Get.back();
                             },
                             child: Text(
@@ -169,6 +179,32 @@ class ProjectScreen extends StatelessWidget {
               color: Theme.of(context).iconTheme.color,
               thickness: 2,
             ),
+            (controller.tablesForProject.isEmpty)
+                ? Expanded(
+                    child: Center(
+                      child: Text(
+                        LangKeys.noTable.tr,
+                        style: context.theme.textTheme.headlineMedium!.copyWith(
+                          color: Theme.of(context).iconTheme.color,
+                          fontSize: 25,
+                        ),
+                      ),
+                    ),
+                  )
+                : Expanded(
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: controller.tablesForProject.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                          child: TableWidget(
+                            table: controller.tablesForProject[index],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
           ],
         ),
       );
