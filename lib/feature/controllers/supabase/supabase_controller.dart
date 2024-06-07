@@ -17,6 +17,16 @@ class SupabaseController extends GetxController {
   final currentProject = const Project(id: 0, projectName: '', ownerId: 0).obs;
   final tablesForProject = <ModelTable>[].obs;
 
+  Future<void> deleteTable(int id) async {
+    try {
+      await supabase.value.from('tables').delete().eq('id', id);
+      await getTables();
+    } on PostgrestException catch (error) {
+      Get.dialog(supabaseErrorDialog(error));
+    }
+    update();
+  }
+
   Future<void> getTables() async {
     try {
       final response = await supabase.value
