@@ -14,6 +14,16 @@ abstract class LangKeys {
   static const String errorFromSupabase = 'error_from_supabase';
   static const String errorTable = 'error_table';
   static const String tableAlreadyExists = 'table_already_exists';
+  static const String deleteTable = 'delete_table';
+  static const String editTable = 'edit_table';
+  static const String emptyTableNameError = 'empty_table_name_error';
+  static const String tableNameAlreadyExists = 'table_name_already_exists';
+  static const String emptyProjectNameError = 'empty_project_name_error';
+  static const String projectNameAlreadyExists = 'project_name_already_exists';
+  static const String projectLengthError = 'project_length_error';
+  static const String tableLengthError = 'table_length_error';
+  static const String tableShortError = 'table_short_error';
+  static const String projectShortError = 'project_short_error';
 
   //Warning messages
 

@@ -21,6 +21,7 @@ class ProjectItem extends StatelessWidget {
         return InkWell(
           onTap: () {
             controller.setCurrentProject(project.id);
+            controller.update();
             Get.toNamed(AppRouter.project);
           },
           child: AppGradientBorderCard(

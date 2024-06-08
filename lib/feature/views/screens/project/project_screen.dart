@@ -6,7 +6,7 @@ import 'package:flutter_task_manager/core/theme/theme_controller.dart';
 import 'package:flutter_task_manager/feature/controllers/supabase/supabase_controller.dart';
 import 'package:flutter_task_manager/feature/views/screens/project/widgets/table.dart';
 import 'package:flutter_task_manager/feature/views/widgets/buttons/app_outline_gradient_btn.dart';
-import 'package:flutter_task_manager/feature/views/widgets/text_fields/app_graient_border_textfield.dart';
+import 'package:flutter_task_manager/feature/views/widgets/dialogs/table_dialog.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -25,6 +25,7 @@ class ProjectScreen extends StatelessWidget {
               color: context.theme.iconTheme.color,
             ),
             onPressed: () {
+              controller.tablesForProject.clear();
               Get.back();
             },
           ),
@@ -98,57 +99,7 @@ class ProjectScreen extends StatelessWidget {
                 width: 250,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    TextEditingController tableNameController =
-                        TextEditingController();
-                    Get.dialog(
-                      AlertDialog(
-                        backgroundColor: context.theme.scaffoldBackgroundColor,
-                        title: Text(
-                          LangKeys.createTable.tr,
-                          style: context.theme.textTheme.headlineMedium!
-                              .copyWith(fontSize: 25),
-                        ),
-                        content: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: SizedBox(
-                            width: context.width * 0.5,
-                            child: AppGradientBorderTextField(
-                              hintText: LangKeys.tableName.tr,
-                              controller: tableNameController,
-                              keyboardType: TextInputType.text,
-                              prefixIcon: Icon(
-                                HeroIcons.table_cells,
-                                color: Theme.of(context).iconTheme.color,
-                              ),
-                            ),
-                          ),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            child: Text(
-                              LangKeys.cancel.tr,
-                              style: context.theme.textTheme.labelMedium!
-                                  .copyWith(fontSize: 20),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              controller.createTable(tableNameController.text);
-                              controller.getTables();
-                              Get.back();
-                            },
-                            child: Text(
-                              LangKeys.ok.tr,
-                              style: context.theme.textTheme.headlineMedium!
-                                  .copyWith(fontSize: 20),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
+                    Get.dialog(const AppTableDialog(isEdit: false));
                   },
                   style: ElevatedButton.styleFrom(
                     elevation: 0,

@@ -15,6 +15,19 @@ abstract class Ukrainian {
     'error_from_supabase': 'Помилка Supabase',
     'error_table': 'Помилка таблиці',
     'table_already_exists': 'Таблиця вже існує',
+    'delete_table': 'Видалити таблицю',
+    'edit_table': 'Редагувати таблицю',
+    'empty_table_name_error': 'Назва таблиці порожня',
+    'table_name_already_exists': 'Назва таблиці вже існує',
+    'empty_project_name_error': 'Назва проекту порожня',
+    'project_name_already_exists': 'Назва проекту вже існує',
+    'project_length_error':
+        'Довжина назви проекту повинна бути менше 20 символів',
+    'table_length_error':
+        'Довжина назви таблиці повинна бути менше 20 символів',
+    'table_short_error': 'Довжина назви таблиці повинна бути більше 3 символів',
+    'project_short_error':
+        'Довжина назви проекту повинна бути більше 3 символів',
     //Warning messages
 
     //Info messages

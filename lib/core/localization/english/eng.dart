@@ -15,6 +15,17 @@ abstract class English {
     'error_from_supabase': 'Supabase error',
     'error_table': 'Table error',
     'table_already_exists': 'Table already exists',
+    'delete_table': 'Delete table',
+    'edit_table': 'Edit table',
+    'empty_table_name_error': 'Table name is empty',
+    'table_name_already_exists': 'Table name already exists',
+    'table_length_error': 'Table name length must be less than 20 characters',
+    'empty_project_name_error': 'Project name is empty',
+    'project_name_already_exists': 'Project name already exists',
+    'project_length_error':
+        'Project name length must be less than 20 characters',
+    'table_short_error': 'Table name length must be more than 3 characters',
+    'project_short_error': 'Project name length must be more than 3 characters',
     //Warning messages
 
     //Info messages

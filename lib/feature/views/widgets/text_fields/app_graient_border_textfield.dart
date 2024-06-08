@@ -12,7 +12,8 @@ class AppGradientBorderTextField extends StatelessWidget {
       this.prefixIcon,
       this.obscureText,
       this.readOnly,
-      this.keyboardType});
+      this.keyboardType,
+      this.initialValue});
 
   final TextEditingController? controller;
   final String? hintText;
@@ -22,10 +23,12 @@ class AppGradientBorderTextField extends StatelessWidget {
   final bool? obscureText;
   final bool? readOnly;
   final TextInputType? keyboardType;
+  final String? initialValue;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: initialValue,
       keyboardType: keyboardType,
       readOnly: readOnly ?? false,
       obscureText: obscureText ?? false,

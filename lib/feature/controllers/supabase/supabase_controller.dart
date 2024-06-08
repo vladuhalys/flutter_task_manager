@@ -17,10 +17,30 @@ class SupabaseController extends GetxController {
   final currentProject = const Project(id: 0, projectName: '', ownerId: 0).obs;
   final tablesForProject = <ModelTable>[].obs;
 
+  bool checkExistTable(String name) {
+    bool result = false;
+    for (var element in tablesForProject) {
+      if (element.tableName == name) {
+        result = true;
+      }
+    }
+    return result;
+  }
+
+  Future<void> editTable(int id, String name) async {
+    try {
+      await supabase.value
+          .from('tables')
+          .update({'table_name': name}).eq('id', id);
+    } on PostgrestException catch (error) {
+      Get.dialog(supabaseErrorDialog(error));
+    }
+    update();
+  }
+
   Future<void> deleteTable(int id) async {
     try {
       await supabase.value.from('tables').delete().eq('id', id);
-      await getTables();
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
     }
@@ -33,6 +53,7 @@ class SupabaseController extends GetxController {
           .from('tables')
           .select()
           .eq('project_id', currentProject.value.id);
+      tablesForProject.clear();
       tablesForProject.value =
           response.map((e) => ModelTable.fromJson(e)).toList();
       update();
@@ -126,9 +147,19 @@ class SupabaseController extends GetxController {
     update();
   }
 
+  Future<void> deleteTableByProjectId(int id) async {
+    try {
+      await supabase.value.from('tables').delete().eq('project_id', id);
+    } on PostgrestException catch (error) {
+      Get.dialog(supabaseErrorDialog(error));
+    }
+    update();
+  }
+
   //delete project
   Future<void> deleteProject(int id) async {
     try {
+      await deleteTableByProjectId(id);
       await supabase.value.from('projects').delete().eq('id', id);
       await getProjects();
     } on PostgrestException catch (error) {
