@@ -32,6 +32,7 @@ class SupabaseController extends GetxController {
       await supabase.value
           .from('tables')
           .update({'table_name': name}).eq('id', id);
+      await getTables();
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
     }
@@ -41,6 +42,7 @@ class SupabaseController extends GetxController {
   Future<void> deleteTable(int id) async {
     try {
       await supabase.value.from('tables').delete().eq('id', id);
+      await getTables();
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
     }
@@ -53,7 +55,6 @@ class SupabaseController extends GetxController {
           .from('tables')
           .select()
           .eq('project_id', currentProject.value.id);
-      tablesForProject.clear();
       tablesForProject.value =
           response.map((e) => ModelTable.fromJson(e)).toList();
       update();
@@ -71,14 +72,18 @@ class SupabaseController extends GetxController {
 
   Future<void> createTable(String name) async {
     try {
-      final response =
-          await supabase.value.from('tables').select().eq('table_name', name);
+      final response = await supabase.value
+          .from('tables')
+          .select()
+          .eq('project_id', currentProject.value.id)
+          .eq('table_name', name);
       if (response.isEmpty) {
         await supabase.value.from('tables').insert({
           'table_name': name,
           'project_id': currentProject.value.id,
         });
         update();
+        await getTables();
       } else {
         Get.dialog(
           AlertDialog(
@@ -107,6 +112,18 @@ class SupabaseController extends GetxController {
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
     }
+  }
+
+  Future<void> editProject(int id, String name) async {
+    try {
+      await supabase.value
+          .from('projects')
+          .update({'project_name': name}).eq('id', id);
+      await getProjects();
+    } on PostgrestException catch (error) {
+      Get.dialog(supabaseErrorDialog(error));
+    }
+    update();
   }
 
   Future<void> createProject(String name) async {

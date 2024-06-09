@@ -16,7 +16,6 @@ class ProjectScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SupabaseController>(builder: (controller) {
-      controller.getTables();
       return Scaffold(
         appBar: AppBar(
           leading: IconButton(

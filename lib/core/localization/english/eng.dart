@@ -52,5 +52,6 @@ abstract class English {
     'cretae_table': 'Create Table',
     'table_name': 'Table Name',
     'no_table': 'No table',
+    'edit_project': 'Edit Project',
   };
 }

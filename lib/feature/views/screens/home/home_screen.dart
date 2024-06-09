@@ -6,13 +6,25 @@ import 'package:flutter_task_manager/core/theme/theme_controller.dart';
 import 'package:flutter_task_manager/feature/controllers/supabase/supabase_controller.dart';
 import 'package:flutter_task_manager/feature/views/screens/home/widgets/project_item.dart';
 import 'package:flutter_task_manager/feature/views/widgets/buttons/app_outline_gradient_btn.dart';
-import 'package:flutter_task_manager/feature/views/widgets/text_fields/app_graient_border_textfield.dart';
+import 'package:flutter_task_manager/feature/views/widgets/dialogs/project_dialog.dart';
 
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    Get.put(ProjectDialogController());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SupabaseController>(
@@ -92,58 +104,7 @@ class HomeScreen extends StatelessWidget {
                   width: 250,
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      TextEditingController projectNameController =
-                          TextEditingController();
-                      Get.dialog(
-                        AlertDialog(
-                          backgroundColor:
-                              Theme.of(context).scaffoldBackgroundColor,
-                          title: Text(
-                            LangKeys.createNewProject.tr,
-                            style: context.theme.textTheme.headlineMedium!
-                                .copyWith(fontSize: 25),
-                          ),
-                          content: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: SizedBox(
-                              width: context.width * 0.5,
-                              child: AppGradientBorderTextField(
-                                hintText: LangKeys.projectName.tr,
-                                controller: projectNameController,
-                                keyboardType: TextInputType.text,
-                                prefixIcon: Icon(
-                                  EvaIcons.archive_outline,
-                                  color: Theme.of(context).iconTheme.color,
-                                ),
-                              ),
-                            ),
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Get.back();
-                              },
-                              child: Text(
-                                LangKeys.cancel.tr,
-                                style: context.theme.textTheme.labelMedium!
-                                    .copyWith(fontSize: 20),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Get.find<SupabaseController>()
-                                    .createProject(projectNameController.text);
-                                Get.back();
-                              },
-                              child: Text(
-                                LangKeys.ok.tr,
-                                style: context.theme.textTheme.headlineMedium!
-                                    .copyWith(fontSize: 20),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
+                      Get.dialog(const AppProjectDialog(isEdit: false));
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0,

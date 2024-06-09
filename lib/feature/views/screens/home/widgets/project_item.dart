@@ -6,6 +6,7 @@ import 'package:flutter_task_manager/feature/controllers/supabase/supabase_contr
 import 'package:flutter_task_manager/feature/models/project.dart';
 import 'package:flutter_task_manager/feature/models/user.dart';
 import 'package:flutter_task_manager/feature/views/widgets/cards/app_gradient_border_card.dart';
+import 'package:flutter_task_manager/feature/views/widgets/dialogs/project_dialog.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -20,8 +21,8 @@ class ProjectItem extends StatelessWidget {
       builder: (controller) {
         return InkWell(
           onTap: () {
-            controller.setCurrentProject(project.id);
-            controller.update();
+            controller.currentProject.value = project;
+            controller.getTables();
             Get.toNamed(AppRouter.project);
           },
           child: AppGradientBorderCard(
@@ -47,6 +48,15 @@ class ProjectItem extends StatelessWidget {
                             color: Theme.of(context).iconTheme.color,
                             fontSize: 20,
                           ),
+                    ),
+                    const SizedBox(width: 20.0),
+                    InkWell(
+                      onTap: () {
+                        Get.dialog(
+                            AppProjectDialog(isEdit: true, project: project));
+                      },
+                      child: Icon(HeroIcons.pencil,
+                          size: 30.0, color: Theme.of(context).iconTheme.color),
                     ),
                     const SizedBox(width: 20.0),
                     InkWell(

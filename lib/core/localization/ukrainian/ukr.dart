@@ -55,5 +55,6 @@ abstract class Ukrainian {
     'cretae_table': 'Створити Таблицю',
     'table_name': 'Назва таблиці',
     'no_table': 'Немає таблиці',
+    'edit_project': 'Редагувати проект',
   };
 }

@@ -52,4 +52,5 @@ abstract class LangKeys {
   static const String createTable = 'cretae_table';
   static const String tableName = 'table_name';
   static const String noTable = 'no_table';
+  static const String editProject = 'edit_project';
 }
