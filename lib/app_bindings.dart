@@ -8,10 +8,10 @@ import 'package:get/get.dart';
 class AppBindins extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<ThemeController>(() => ThemeController());
-    Get.lazyPut<LoggerController>(() => LoggerController());
+    Get.put<ThemeController>(ThemeController(), permanent: true);
+    Get.put<LoggerController>(LoggerController(), permanent: true);
     Get.lazyPut<ValidationController>(() => ValidationController());
-    Get.lazyPut<LocalizationController>(() => LocalizationController());
-    Get.lazyPut<SupabaseController>(() => SupabaseController());
+    Get.put<LocalizationController>(LocalizationController(), permanent: true);
+    Get.put<SupabaseController>(SupabaseController(), permanent: true);
   }
 }

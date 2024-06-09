@@ -4,6 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static final light = ThemeData(
+    drawerTheme: const DrawerThemeData(
+      backgroundColor: AppColors.backgroundColor,
+    ),
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
         overlayColor: WidgetStateProperty.all(
@@ -62,6 +65,9 @@ class AppTheme {
   );
 
   static final dark = ThemeData(
+    drawerTheme: const DrawerThemeData(
+      backgroundColor: AppColors.darkBackgroundColor,
+    ),
     iconButtonTheme: IconButtonThemeData(
       style: ButtonStyle(
         overlayColor: WidgetStateProperty.all(

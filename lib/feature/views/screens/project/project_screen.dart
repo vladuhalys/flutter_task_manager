@@ -5,6 +5,7 @@ import 'package:flutter_task_manager/core/router/router.dart';
 import 'package:flutter_task_manager/core/theme/theme_controller.dart';
 import 'package:flutter_task_manager/feature/controllers/supabase/supabase_controller.dart';
 import 'package:flutter_task_manager/feature/views/screens/project/widgets/table.dart';
+import 'package:flutter_task_manager/feature/views/screens/project/widgets/task_drawer.dart';
 import 'package:flutter_task_manager/feature/views/widgets/buttons/app_outline_gradient_btn.dart';
 import 'package:flutter_task_manager/feature/views/widgets/dialogs/table_dialog.dart';
 import 'package:get/get.dart';
@@ -17,6 +18,7 @@ class ProjectScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<SupabaseController>(builder: (controller) {
       return Scaffold(
+        endDrawer: const TaskDrawer(isEdit: false),
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(
@@ -25,7 +27,7 @@ class ProjectScreen extends StatelessWidget {
             ),
             onPressed: () {
               controller.tablesForProject.clear();
-              Get.back();
+              Get.offNamed(AppRouter.home);
             },
           ),
           centerTitle: true,
@@ -147,7 +149,7 @@ class ProjectScreen extends StatelessWidget {
                       itemCount: controller.tablesForProject.length,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                           child: TableWidget(
                             table: controller.tablesForProject[index],
                           ),

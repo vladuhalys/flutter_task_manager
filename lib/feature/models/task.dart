@@ -24,6 +24,21 @@ class Task extends Equatable {
       required this.files,
       required this.tableId});
 
+  factory Task.fromJson(Map<String, dynamic> json) {
+    return Task(
+      id: json['id'] as int,
+      taskName: json['task_name'] as String,
+      description: json['description'] as String,
+      tag: json['tag'] as String,
+      assignedUserId: json['assigned_user_id'] as int,
+      startTime: DateTime.parse(json['start_time'] as String),
+      endTime: DateTime.parse(json['end_time'] as String),
+      comments: (json['comments'] as List).map((e) => e as String).toList(),
+      files: (json['files'] as List).map((e) => e as String).toList(),
+      tableId: json['table_id'] as int,
+    );
+  }
+
   @override
   List<Object?> get props => [
         id,

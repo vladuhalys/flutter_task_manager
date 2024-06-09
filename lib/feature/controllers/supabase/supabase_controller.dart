@@ -4,6 +4,7 @@ import 'package:flutter_task_manager/core/localization/keys.dart';
 import 'package:flutter_task_manager/feature/controllers/validation/validation_controller.dart';
 import 'package:flutter_task_manager/feature/models/project.dart';
 import 'package:flutter_task_manager/feature/models/table.dart';
+import 'package:flutter_task_manager/feature/models/task.dart';
 import 'package:flutter_task_manager/feature/models/user.dart';
 import 'package:flutter_task_manager/feature/views/widgets/dialogs/error_supabase.dart';
 import 'package:get/get.dart';
@@ -16,6 +17,20 @@ class SupabaseController extends GetxController {
   final projects = <Project>[].obs;
   final currentProject = const Project(id: 0, projectName: '', ownerId: 0).obs;
   final tablesForProject = <ModelTable>[].obs;
+  final tasksForProject = <int, List<Task>>{}.obs;
+
+  Future<void> getTasksByTableId(int id) async {
+    try {
+      final response = await supabase.value
+          .from('tasks')
+          .select()
+          .eq('table_id', id)
+          .order('id', ascending: false);
+      tasksForProject[id] = response.map((e) => Task.fromJson(e)).toList();
+    } on PostgrestException catch (error) {
+      Get.dialog(supabaseErrorDialog(error));
+    }
+  }
 
   bool checkExistTable(String name) {
     bool result = false;
