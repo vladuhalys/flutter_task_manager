@@ -13,7 +13,10 @@ class AppGradientBorderTextField extends StatelessWidget {
       this.obscureText,
       this.readOnly,
       this.keyboardType,
-      this.initialValue});
+      this.initialValue,
+      this.minLines,
+      this.maxLines,
+      this.expands});
 
   final TextEditingController? controller;
   final String? hintText;
@@ -24,15 +27,23 @@ class AppGradientBorderTextField extends StatelessWidget {
   final bool? readOnly;
   final TextInputType? keyboardType;
   final String? initialValue;
+  final int? minLines;
+  final int? maxLines;
+  final bool? expands;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      textAlignVertical: TextAlignVertical.top,
+      textAlign: TextAlign.start,
+      expands: expands ?? false,
       initialValue: initialValue,
       keyboardType: keyboardType,
       readOnly: readOnly ?? false,
       obscureText: obscureText ?? false,
       onChanged: onChanged,
+      maxLines: maxLines,
+      minLines: minLines,
       controller: controller,
       style: Theme.of(context)
           .textTheme

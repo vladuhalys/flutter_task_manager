@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_task_manager/core/localization/keys.dart';
 import 'package:flutter_task_manager/feature/controllers/supabase/supabase_controller.dart';
 import 'package:flutter_task_manager/feature/models/table.dart';
 import 'package:flutter_task_manager/feature/views/screens/project/widgets/popup.dart';
@@ -77,7 +78,7 @@ class TableWidget extends StatelessWidget {
                   onPressed: () {
                     Scaffold.of(context).openEndDrawer();
                   },
-                  label: Text('Add Task',
+                  label: Text(LangKeys.createTask.tr,
                       style: context.theme.textTheme.labelMedium!
                           .copyWith(fontSize: 16.0)),
                   icon: Icon(HeroIcons.plus_circle,

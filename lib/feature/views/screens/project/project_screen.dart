@@ -46,7 +46,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
             onPressed: () {
               controller.tablesForProject.clear();
               controller.getProjects();
-              Get.back();
+              Get.offAndToNamed(AppRouter.home);
             },
           ),
           centerTitle: true,

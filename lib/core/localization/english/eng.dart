@@ -79,5 +79,6 @@ abstract class English {
     'loading': 'Loading',
     'something_went_wrong':
         'Ops... Something went wrong! Please, check your internet connection and try to reload website.',
+    'uploaded_files': 'Uploaded files',
   };
 }

@@ -23,7 +23,7 @@ class ProjectItem extends StatelessWidget {
           onTap: () {
             controller.currentProject.value = project;
             controller.getTables();
-            Get.toNamed(AppRouter.project);
+            Get.offAndToNamed(AppRouter.project);
           },
           child: AppGradientBorderCard(
             width: double.infinity,

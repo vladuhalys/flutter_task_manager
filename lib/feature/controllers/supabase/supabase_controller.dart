@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:typed_data';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_manager/core/const/const.dart';
 import 'package:flutter_task_manager/core/localization/keys.dart';
@@ -24,6 +26,48 @@ class SupabaseController extends GetxController {
   final isLoadProject = false.obs;
   final isLoadTable = false.obs;
   final isLoadTask = false.obs;
+
+  Future<void> createBucket(String name) async {
+    try {
+      await supabase.value.storage.createBucket(name);
+    } on PostgrestException catch (error) {
+      Get.dialog(supabaseErrorDialog(error));
+    }
+  }
+
+  Future<void> deleteBucket(String name) async {
+    try {
+      await supabase.value.storage.deleteBucket(name);
+    } on PostgrestException catch (error) {
+      Get.dialog(supabaseErrorDialog(error));
+    }
+  }
+
+  Future<void> uploadFile(String bucket, FilePickerResult? result) async {
+    try {
+      if (result != null) {
+        for (final file in result.files) {
+          final fileBytes = file.bytes;
+          if (fileBytes != null) {
+            await supabase.value.storage
+                .from(bucket)
+                .uploadBinary(file.name, fileBytes);
+          }
+        }
+      }
+    } on PostgrestException catch (error) {
+      Get.dialog(supabaseErrorDialog(error));
+    }
+  }
+
+  Future<void> getAllFilesFromBucket(String bucketName) async {
+    final response = await supabase.value.storage.from(bucketName).list();
+    for (final file in response) {
+      final url = await supabase.value.storage
+          .from(bucketName)
+          .createSignedUrl(file.name, 60);
+    }
+  }
 
   Future<void> getTasksByTableId(int id) async {
     try {
@@ -82,12 +126,11 @@ class SupabaseController extends GetxController {
         throw const PostgrestException(
           message: 'Timeout request',
         );
-      }).whenComplete(() {
-        isLoadTable.value = false;
-        update();
       });
       tablesForProject.value =
           response.map((e) => ModelTable.fromJson(e)).toList();
+      isLoadTable.value = false;
+      update();
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
     }

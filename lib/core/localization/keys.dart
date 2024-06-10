@@ -79,4 +79,5 @@ abstract class LangKeys {
   static const String comment = 'comment';
   static const String file = 'file';
   static const String loading = 'loading';
+  static const String uploadedFiles = 'uploaded_files';
 }
