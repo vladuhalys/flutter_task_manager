@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +21,7 @@ class SupabaseController extends GetxController {
   final currentProject = const Project(id: 0, projectName: '', ownerId: 0).obs;
   final tablesForProject = <ModelTable>[].obs;
   final tasksForProject = <int, List<Task>>{}.obs;
+  final filesUrls = <String>[].obs;
 
   final isLoadProject = false.obs;
   final isLoadTable = false.obs;
@@ -62,11 +62,8 @@ class SupabaseController extends GetxController {
 
   Future<void> getAllFilesFromBucket(String bucketName) async {
     final response = await supabase.value.storage.from(bucketName).list();
-    for (final file in response) {
-      final url = await supabase.value.storage
-          .from(bucketName)
-          .createSignedUrl(file.name, 60);
-    }
+    filesUrls.value = response.map((e) => e.toString()).toList();
+    update();
   }
 
   Future<void> getTasksByTableId(int id) async {
@@ -80,6 +77,16 @@ class SupabaseController extends GetxController {
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
     }
+  }
+
+  bool checkExistProject(String name) {
+    bool result = false;
+    for (var element in projects) {
+      if (element.projectName == name) {
+        result = true;
+      }
+    }
+    return result;
   }
 
   bool checkExistTable(String name) {

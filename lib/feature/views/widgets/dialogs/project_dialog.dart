@@ -103,19 +103,22 @@ class _AppProjectDialogState extends State<AppProjectDialog> {
           TextButton(
             onPressed: () {
               if (Get.find<SupabaseController>()
-                  .checkExistTable(controller.projectName)) {
+                  .checkExistProject(controller.projectName)) {
                 controller._isProjectValid.value = false;
-                controller._errorText.value = LangKeys.tableAlreadyExists.tr;
+                controller._errorText.value = LangKeys.projectIsExist.tr;
                 controller.update();
               } else {
-                if (!widget.isEdit) {
-                  Get.find<SupabaseController>()
-                      .createProject(controller.projectName);
-                } else {
-                  Get.find<SupabaseController>()
-                      .editProject(widget.project!.id, controller.projectName);
+                if (controller.isProjectValid) {
+                  if (!widget.isEdit) {
+                    Get.find<SupabaseController>()
+                        .createProject(controller.projectName);
+                  } else {
+                    Get.find<SupabaseController>().editProject(
+                        widget.project!.id, controller.projectName);
+                  }
+                  controller._errorText.value = '';
+                  Get.back();
                 }
-                Get.back();
               }
             },
             child: Text(

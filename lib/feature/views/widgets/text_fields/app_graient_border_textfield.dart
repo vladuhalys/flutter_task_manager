@@ -42,8 +42,8 @@ class AppGradientBorderTextField extends StatelessWidget {
       readOnly: readOnly ?? false,
       obscureText: obscureText ?? false,
       onChanged: onChanged,
-      maxLines: maxLines,
-      minLines: minLines,
+      maxLines: (obscureText != null) ? 1 : maxLines,
+      minLines: (obscureText != null) ? null : minLines,
       controller: controller,
       style: Theme.of(context)
           .textTheme

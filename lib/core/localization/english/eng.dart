@@ -26,6 +26,7 @@ abstract class English {
         'Project name length must be less than 20 characters',
     'table_short_error': 'Table name length must be more than 3 characters',
     'project_short_error': 'Project name length must be more than 3 characters',
+    'project_is_exist': 'Project already exists',
     'empty_task_name_error': 'Task name is empty',
     'task_name_already_exists': 'Task name already exists',
     'task_length_error': 'Task name length must be less than 20 characters',

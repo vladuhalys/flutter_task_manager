@@ -28,6 +28,7 @@ abstract class Ukrainian {
     'table_short_error': 'Довжина назви таблиці повинна бути більше 3 символів',
     'project_short_error':
         'Довжина назви проекту повинна бути більше 3 символів',
+    'project_is_exist': 'Проект вже існує',
     'empty_task_name_error': 'Назва завдання порожня',
     'task_name_already_exists': 'Назва завдання вже існує',
     'task_length_error':

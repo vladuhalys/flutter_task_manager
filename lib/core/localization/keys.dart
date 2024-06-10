@@ -24,6 +24,7 @@ abstract class LangKeys {
   static const String tableLengthError = 'table_length_error';
   static const String tableShortError = 'table_short_error';
   static const String projectShortError = 'project_short_error';
+  static const String projectIsExist = 'project_is_exist';
   static const String emptyTaskNameError = 'empty_task_name_error';
   static const String taskNameAlreadyExists = 'task_name_already_exists';
   static const String taskLengthError = 'task_length_error';

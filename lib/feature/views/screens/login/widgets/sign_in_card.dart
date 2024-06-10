@@ -21,26 +21,30 @@ class SignInCard extends GetWidget<ThemeController> {
     return GetBuilder<ValidationController>(builder: (validationController) {
       return AppGradientBorderCard(
         width: context.width * 0.4,
-        height: context.height * 0.8,
+        height: (validationController.isRegistrForm)
+            ? context.height * 0.9
+            : context.height * 0.8,
         gradients: [AppColors.btnGradientStart, AppColors.btnGradientEnd],
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 10.0),
-              child: Text(
-                  (validationController.isRegistrForm)
-                      ? LangKeys.register.tr
-                      : LangKeys.login.tr,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineMedium!
-                      .copyWith(fontSize: 35)),
+              child: FittedBox(
+                child: Text(
+                    (validationController.isRegistrForm)
+                        ? LangKeys.register.tr
+                        : LangKeys.login.tr,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineMedium!
+                        .copyWith(fontSize: 25)),
+              ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 0.0, bottom: 50.0),
+              padding: const EdgeInsets.only(top: 0.0, bottom: 30.0),
               child: Text(LangKeys.welcomeBack.tr,
-                  style: context.textTheme.titleMedium!.copyWith(fontSize: 25)),
+                  style: context.textTheme.titleMedium!.copyWith(fontSize: 20)),
             ),
             Column(
               children: [
@@ -55,7 +59,7 @@ class SignInCard extends GetWidget<ThemeController> {
                       validationController.onEmailChanged(value);
                     }),
                 AppErrorText(errorText: validationController.emailError.tr),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 AppGradientBorderTextField(
                     suffixIcon: Padding(
                       padding: const EdgeInsets.only(right: 10),
@@ -87,7 +91,7 @@ class SignInCard extends GetWidget<ThemeController> {
                       validationController.onPasswordChanged(value);
                     }),
                 AppErrorText(errorText: validationController.passwordError.tr),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 (validationController.isRegistrForm)
                     ? Column(
                         children: [
@@ -130,7 +134,7 @@ class SignInCard extends GetWidget<ThemeController> {
                           AppErrorText(
                               errorText:
                                   validationController.confirmPasswordError.tr),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 10),
                         ],
                       )
                     : Container(),
@@ -162,17 +166,17 @@ class SignInCard extends GetWidget<ThemeController> {
                         .copyWith(fontSize: 15)),
                 const SizedBox(height: 20),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Expanded(
                       child: AppOutlineIconButton(
-                          icon: const Icon(Bootstrap.google),
+                          icon: const Icon(Bootstrap.google, size: 20),
                           text: Text(
                             'Google',
                             style: Get.textTheme.headlineMedium!.copyWith(
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                              fontSize: 15,
                             ),
                           ),
                           onTap: () async {
@@ -183,12 +187,12 @@ class SignInCard extends GetWidget<ThemeController> {
                     const SizedBox(width: 20),
                     Expanded(
                       child: AppOutlineIconButton(
-                          icon: const Icon(Bootstrap.github),
+                          icon: const Icon(Bootstrap.github, size: 20),
                           text: Text(
                             'GitHub',
                             style: Get.textTheme.headlineMedium!.copyWith(
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                              fontSize: 15,
                             ),
                           ),
                           onTap: () {
@@ -198,12 +202,12 @@ class SignInCard extends GetWidget<ThemeController> {
                     const SizedBox(width: 20),
                     Expanded(
                       child: AppOutlineIconButton(
-                          icon: const Icon(Bootstrap.gitlab),
+                          icon: const Icon(Bootstrap.gitlab, size: 20),
                           text: Text(
                             'GitLab',
                             style: Get.textTheme.headlineMedium!.copyWith(
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                              fontSize: 15,
                             ),
                           ),
                           onTap: () {
@@ -231,7 +235,7 @@ class SignInCard extends GetWidget<ThemeController> {
                         style:
                             Theme.of(context).textTheme.titleMedium!.copyWith(
                                   fontSize: 20,
-                                  color: Theme.of(context).iconTheme.color,
+                                  color: AppColors.btnGradientStart,
                                 ))),
               ],
             ),
