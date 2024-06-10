@@ -9,10 +9,8 @@ class AuthRoutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<SupabaseController>(
-      builder: (supabaseController) {
-        return supabaseController.isAuth ? const HomeScreen() : LoginScreen();
-      },
-    );
+    return Get.find<SupabaseController>().isAuth
+        ? const HomeScreen()
+        : LoginScreen();
   }
 }

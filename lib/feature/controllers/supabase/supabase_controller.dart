@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_task_manager/core/const/const.dart';
 import 'package:flutter_task_manager/core/localization/keys.dart';
@@ -18,6 +20,10 @@ class SupabaseController extends GetxController {
   final currentProject = const Project(id: 0, projectName: '', ownerId: 0).obs;
   final tablesForProject = <ModelTable>[].obs;
   final tasksForProject = <int, List<Task>>{}.obs;
+
+  final isLoadProject = false.obs;
+  final isLoadTable = false.obs;
+  final isLoadTask = false.obs;
 
   Future<void> getTasksByTableId(int id) async {
     try {
@@ -66,13 +72,22 @@ class SupabaseController extends GetxController {
 
   Future<void> getTables() async {
     try {
+      isLoadTable.value = true;
+      update();
       final response = await supabase.value
           .from('tables')
           .select()
-          .eq('project_id', currentProject.value.id);
+          .eq('project_id', currentProject.value.id)
+          .timeout(const Duration(seconds: 15), onTimeout: () {
+        throw const PostgrestException(
+          message: 'Timeout request',
+        );
+      }).whenComplete(() {
+        isLoadTable.value = false;
+        update();
+      });
       tablesForProject.value =
           response.map((e) => ModelTable.fromJson(e)).toList();
-      update();
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
     }
@@ -157,24 +172,32 @@ class SupabaseController extends GetxController {
   //Get all projects
   Future<void> getProjects() async {
     try {
-      final response = await supabase.value.from('projects').select();
+      isLoadProject.value = true;
+      update();
+      final response = await supabase.value
+          .from('projects')
+          .select()
+          .timeout(const Duration(seconds: 15), onTimeout: () {
+        throw const PostgrestException(
+          message: 'Timeout request',
+        );
+      }).whenComplete(() {
+        isLoadTable.value = false;
+        update();
+      });
+      //await Future.delayed(const Duration(seconds: 2));
       projects.value = response.map((e) => Project.fromJson(e)).toList();
+      isLoadProject.value = false;
+      update();
+    } on PostgrestException catch (error) {
+      isLoadProject.value = false;
+      update();
+      Get.dialog(supabaseErrorDialog(error));
     } catch (e) {
-      Get.dialog(
-        AlertDialog(
-          backgroundColor: Get.context?.theme.scaffoldBackgroundColor,
-          title: const Text('Error'),
-          content: Text(e.toString()),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Get.back();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
+      isLoadProject.value = false;
+      update();
+      Get.dialog(supabaseErrorDialog(
+          PostgrestException(message: LangKeys.somethingWentWrong.tr)));
     }
     update();
   }
@@ -184,6 +207,11 @@ class SupabaseController extends GetxController {
       await supabase.value.from('tables').delete().eq('project_id', id);
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
+    } catch (e) {
+      isLoadProject.value = false;
+      update();
+      Get.dialog(supabaseErrorDialog(
+          PostgrestException(message: LangKeys.somethingWentWrong.tr)));
     }
     update();
   }
@@ -196,6 +224,11 @@ class SupabaseController extends GetxController {
       await getProjects();
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
+    } catch (e) {
+      isLoadProject.value = false;
+      update();
+      Get.dialog(supabaseErrorDialog(
+          PostgrestException(message: LangKeys.somethingWentWrong.tr)));
     }
     update();
   }
@@ -307,6 +340,11 @@ class SupabaseController extends GetxController {
       }
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
+    } catch (e) {
+      isLoadProject.value = false;
+      update();
+      Get.dialog(supabaseErrorDialog(
+          PostgrestException(message: LangKeys.somethingWentWrong.tr)));
     }
     update();
   }

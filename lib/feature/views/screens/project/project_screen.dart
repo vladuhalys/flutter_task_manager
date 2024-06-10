@@ -8,11 +8,29 @@ import 'package:flutter_task_manager/feature/views/screens/project/widgets/table
 import 'package:flutter_task_manager/feature/views/screens/project/widgets/task_drawer.dart';
 import 'package:flutter_task_manager/feature/views/widgets/buttons/app_outline_gradient_btn.dart';
 import 'package:flutter_task_manager/feature/views/widgets/dialogs/table_dialog.dart';
+import 'package:flutter_task_manager/feature/views/widgets/loader/loader.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 
-class ProjectScreen extends StatelessWidget {
+class ProjectScreen extends StatefulWidget {
   const ProjectScreen({super.key});
+
+  @override
+  State<ProjectScreen> createState() => _ProjectScreenState();
+}
+
+class _ProjectScreenState extends State<ProjectScreen> {
+  @override
+  void initState() {
+    Get.put(TaskController());
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    Get.delete<TaskController>();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +45,8 @@ class ProjectScreen extends StatelessWidget {
             ),
             onPressed: () {
               controller.tablesForProject.clear();
-              Get.offNamed(AppRouter.home);
+              controller.getProjects();
+              Get.back();
             },
           ),
           centerTitle: true,
@@ -131,32 +150,35 @@ class ProjectScreen extends StatelessWidget {
               color: Theme.of(context).iconTheme.color,
               thickness: 2,
             ),
-            (controller.tablesForProject.isEmpty)
-                ? Expanded(
-                    child: Center(
-                      child: Text(
-                        LangKeys.noTable.tr,
-                        style: context.theme.textTheme.headlineMedium!.copyWith(
-                          color: Theme.of(context).iconTheme.color,
-                          fontSize: 25,
+            (controller.isLoadTable.value)
+                ? const AppLoader()
+                : (controller.tablesForProject.isEmpty)
+                    ? Expanded(
+                        child: Center(
+                          child: Text(
+                            LangKeys.noTable.tr,
+                            style: context.theme.textTheme.headlineMedium!
+                                .copyWith(
+                              color: Theme.of(context).iconTheme.color,
+                              fontSize: 25,
+                            ),
+                          ),
+                        ),
+                      )
+                    : Expanded(
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: controller.tablesForProject.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                              child: TableWidget(
+                                table: controller.tablesForProject[index],
+                              ),
+                            );
+                          },
                         ),
                       ),
-                    ),
-                  )
-                : Expanded(
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: controller.tablesForProject.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                          child: TableWidget(
-                            table: controller.tablesForProject[index],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
           ],
         ),
       );

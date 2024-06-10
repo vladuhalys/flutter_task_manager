@@ -28,6 +28,18 @@ abstract class Ukrainian {
     'table_short_error': 'Довжина назви таблиці повинна бути більше 3 символів',
     'project_short_error':
         'Довжина назви проекту повинна бути більше 3 символів',
+    'empty_task_name_error': 'Назва завдання порожня',
+    'task_name_already_exists': 'Назва завдання вже існує',
+    'task_length_error':
+        'Довжина назви завдання повинна бути менше 20 символів',
+    'task_short_error': 'Довжина назви завдання повинна бути більше 3 символів',
+    'invalid_date': 'Недійсна дата',
+    'invalid_time': 'Недійсний час',
+    'invalid_start_date': 'Недійсна початкова дата',
+    'invalid_end_date': 'Недійсна кінцева дата',
+    'invalid_start_time': 'Недійсний початковий час',
+    'invalid_end_time': 'Недійсний кінцевий час',
+
     //Warning messages
 
     //Info messages
@@ -56,5 +68,21 @@ abstract class Ukrainian {
     'table_name': 'Назва таблиці',
     'no_table': 'Немає таблиці',
     'edit_project': 'Редагувати проект',
+    'task_name': 'Назва завдання',
+    'create_task': 'Створити завдання',
+    'no_task': 'Немає завдання',
+    'edit_task': 'Редагувати завдання',
+    'start_date': 'Початкова дата',
+    'end_date': 'Кінцева дата',
+    'start_time': 'Початковий час',
+    'end_time': 'Кінцевий час',
+    'description': 'Опис',
+    'tag': 'Тег',
+    'assigned_user': 'Призначений користувач',
+    'comments': 'Коментарі',
+    'files': 'Файли',
+    'loading': 'Завантаження',
+    'something_went_wrong':
+        'Ой... Щось пішло не так! Перевірте підключення до інтернету та спробуйте перезавантажити сайт.'
   };
 }

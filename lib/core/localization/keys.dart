@@ -24,6 +24,17 @@ abstract class LangKeys {
   static const String tableLengthError = 'table_length_error';
   static const String tableShortError = 'table_short_error';
   static const String projectShortError = 'project_short_error';
+  static const String emptyTaskNameError = 'empty_task_name_error';
+  static const String taskNameAlreadyExists = 'task_name_already_exists';
+  static const String taskLengthError = 'task_length_error';
+  static const String taskShortError = 'task_short_error';
+  static const String invalidDate = 'invalid_date';
+  static const String invalidTime = 'invalid_time';
+  static const String invalidStartDate = 'invalid_start_date';
+  static const String invalidEndDate = 'invalid_end_date';
+  static const String invalidStartTime = 'invalid_start_time';
+  static const String invalidEndTime = 'invalid_end_time';
+  static const String somethingWentWrong = 'something_went_wrong';
 
   //Warning messages
 
@@ -53,4 +64,19 @@ abstract class LangKeys {
   static const String tableName = 'table_name';
   static const String noTable = 'no_table';
   static const String editProject = 'edit_project';
+  static const String taskName = 'task_name';
+  static const String createTask = 'create_task';
+  static const String noTask = 'no_task';
+  static const String editTask = 'edit_task';
+  static const String task = 'task';
+  static const String startDate = 'start_date';
+  static const String endDate = 'end_date';
+  static const String startTime = 'start_time';
+  static const String endTime = 'end_time';
+  static const String tag = 'tag';
+  static const String description = 'description';
+  static const String assignedUser = 'assigned_user';
+  static const String comment = 'comment';
+  static const String file = 'file';
+  static const String loading = 'loading';
 }

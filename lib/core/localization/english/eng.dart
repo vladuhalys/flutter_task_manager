@@ -26,6 +26,16 @@ abstract class English {
         'Project name length must be less than 20 characters',
     'table_short_error': 'Table name length must be more than 3 characters',
     'project_short_error': 'Project name length must be more than 3 characters',
+    'empty_task_name_error': 'Task name is empty',
+    'task_name_already_exists': 'Task name already exists',
+    'task_length_error': 'Task name length must be less than 20 characters',
+    'task_short_error': 'Task name length must be more than 3 characters',
+    'invalid_date': 'Invalid date',
+    'invalid_time': 'Invalid time',
+    'invalid_start_date': 'Invalid start date',
+    'invalid_end_date': 'Invalid end date',
+    'invalid_start_time': 'Invalid start time',
+    'invalid_end_time': 'Invalid end time',
     //Warning messages
 
     //Info messages
@@ -53,5 +63,21 @@ abstract class English {
     'table_name': 'Table Name',
     'no_table': 'No table',
     'edit_project': 'Edit Project',
+    'create_task': 'Create Task',
+    'task_name': 'Task Name',
+    'no_task': 'No task',
+    'edit_task': 'Edit Task',
+    'start_date': 'Start Date',
+    'end_date': 'End Date',
+    'start_time': 'Start Time',
+    'end_time': 'End Time',
+    'tag': 'Tag',
+    'assigned_user': 'Assigned User',
+    'description': 'Description',
+    'comments': 'Comments',
+    'files': 'Files',
+    'loading': 'Loading',
+    'something_went_wrong':
+        'Ops... Something went wrong! Please, check your internet connection and try to reload website.',
   };
 }

@@ -7,6 +7,7 @@ import 'package:flutter_task_manager/feature/controllers/supabase/supabase_contr
 import 'package:flutter_task_manager/feature/views/screens/home/widgets/project_item.dart';
 import 'package:flutter_task_manager/feature/views/widgets/buttons/app_outline_gradient_btn.dart';
 import 'package:flutter_task_manager/feature/views/widgets/dialogs/project_dialog.dart';
+import 'package:flutter_task_manager/feature/views/widgets/loader/loader.dart';
 
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -22,6 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     Get.put(ProjectDialogController());
+    Get.find<SupabaseController>().getProjects();
+    Get.find<SupabaseController>().setCurrentAuthToTableUser();
     super.initState();
   }
 
@@ -29,8 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return GetBuilder<SupabaseController>(
       builder: (controller) {
-        controller.setCurrentAuthToTableUser();
-        controller.getProjects();
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -136,34 +137,36 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: Theme.of(context).iconTheme.color,
                 thickness: 2,
               ),
-              (controller.projects.isEmpty)
-                  ? Expanded(
-                      child: Center(
-                        child: Text(
-                          LangKeys.noProject.tr,
-                          style:
-                              context.theme.textTheme.headlineMedium!.copyWith(
-                            color: Theme.of(context).iconTheme.color,
-                            fontSize: 25,
+              (controller.isLoadProject.value)
+                  ? const AppLoader()
+                  : (controller.projects.isEmpty)
+                      ? Expanded(
+                          child: Center(
+                            child: Text(
+                              LangKeys.noProject.tr,
+                              style: context.theme.textTheme.headlineMedium!
+                                  .copyWith(
+                                color: Theme.of(context).iconTheme.color,
+                                fontSize: 25,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Expanded(
+                          child: ListView.builder(
+                            itemCount: controller.projects.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                child: ProjectItem(
+                                  project: controller.projects[index],
+                                  user: controller.currentUser.value,
+                                ),
+                              );
+                            },
                           ),
                         ),
-                      ),
-                    )
-                  : Expanded(
-                      child: ListView.builder(
-                        itemCount: controller.projects.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            child: ProjectItem(
-                              project: controller.projects[index],
-                              user: controller.currentUser.value,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
             ],
           ),
         );
