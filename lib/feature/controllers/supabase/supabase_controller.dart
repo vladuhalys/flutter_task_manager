@@ -21,7 +21,7 @@ class SupabaseController extends GetxController {
   final currentProject = const Project(id: 0, projectName: '', ownerId: 0).obs;
   final tablesForProject = <ModelTable>[].obs;
   final tasksForProject = <int, List<Task>>{}.obs;
-  final filesUrls = <String>[].obs;
+  final files = <FileObject>[].obs;
 
   final isLoadProject = false.obs;
   final isLoadTable = false.obs;
@@ -29,10 +29,24 @@ class SupabaseController extends GetxController {
 
   Future<void> createBucket(String name) async {
     try {
-      await supabase.value.storage.createBucket(name);
+      if (!await checkExistBucket(name)) {
+        await supabase.value.storage
+            .createBucket(name, const BucketOptions(public: true));
+      }
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
     }
+  }
+
+  Future<bool> checkExistBucket(String name) async {
+    bool result = false;
+    final List<Bucket> buckets = await supabase.value.storage.listBuckets();
+    for (var element in buckets) {
+      if (element.name == name) {
+        result = true;
+      }
+    }
+    return result;
   }
 
   Future<void> deleteBucket(String name) async {
@@ -43,27 +57,34 @@ class SupabaseController extends GetxController {
     }
   }
 
-  Future<void> uploadFile(String bucket, FilePickerResult? result) async {
+  Future<void> uploadFile(String bucketName, FilePickerResult? result) async {
     try {
+      await createBucket(bucketName);
       if (result != null) {
         for (final file in result.files) {
           final fileBytes = file.bytes;
           if (fileBytes != null) {
             await supabase.value.storage
-                .from(bucket)
+                .from(bucketName)
                 .uploadBinary(file.name, fileBytes);
           }
         }
       }
+      await getAllFilesFromBucket(bucketName);
     } on PostgrestException catch (error) {
+      if (Get.isDialogOpen ?? false) Get.back();
       Get.dialog(supabaseErrorDialog(error));
     }
   }
 
   Future<void> getAllFilesFromBucket(String bucketName) async {
-    final response = await supabase.value.storage.from(bucketName).list();
-    filesUrls.value = response.map((e) => e.toString()).toList();
-    update();
+    try {
+      final response = await supabase.value.storage.from(bucketName).list();
+      files.value = response;
+      update();
+    } on PostgrestException catch (error) {
+      Get.dialog(supabaseErrorDialog(error));
+    }
   }
 
   Future<void> getTasksByTableId(int id) async {
