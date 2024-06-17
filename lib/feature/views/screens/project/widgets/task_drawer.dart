@@ -1,10 +1,11 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_manager/core/localization/keys.dart';
 import 'package:flutter_task_manager/feature/controllers/supabase/supabase_controller.dart';
 import 'package:flutter_task_manager/feature/models/task.dart';
+import 'package:flutter_task_manager/feature/views/screens/project/widgets/date_picker.dart';
+import 'package:flutter_task_manager/feature/views/widgets/buttons/app_elevated_gradient_btn.dart';
 import 'package:flutter_task_manager/feature/views/widgets/buttons/app_outline_icon_button.dart';
 import 'package:flutter_task_manager/feature/views/widgets/text/app_text_error.dart';
 import 'package:flutter_task_manager/feature/views/widgets/text_fields/app_graient_border_textfield.dart';
@@ -15,12 +16,15 @@ class TaskController extends GetxController {
   final _isTaskValid = false.obs;
   final _errorText = ''.obs;
   final _taskName = ''.obs;
+  final _description = ''.obs;
+  final selectedTableId = 0.obs;
   final listFiles = <File>[].obs;
   final filesIsNotEmpty = false.obs;
 
   bool get isTaskValid => _isTaskValid.value;
   String get errorText => _errorText.value;
   String get taskName => _taskName.value;
+  String get description => _description.value;
 
   Future<void> uploadFiles() async {
     if (taskName.isEmpty) {
@@ -57,6 +61,11 @@ class TaskController extends GetxController {
     }
     update();
   }
+
+  void onDescriptionChanged(String value) {
+    _description.value = value.trim();
+    update();
+  }
 }
 
 class TaskDrawer extends StatelessWidget {
@@ -71,12 +80,14 @@ class TaskDrawer extends StatelessWidget {
       width: context.width * 0.5,
       child: GetBuilder<TaskController>(builder: (controller) {
         return GetBuilder<SupabaseController>(builder: (supabaseController) {
-          return Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                Column(
+          return ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -127,8 +138,10 @@ class TaskDrawer extends StatelessWidget {
                       child: AppGradientBorderTextField(
                           keyboardType: TextInputType.multiline,
                           expands: true,
-                          onChanged: controller.onTaskNameChanged),
+                          onChanged: controller.onDescriptionChanged),
                     ),
+                    const SizedBox(height: 10.0),
+                    const DatePicker(),
                     const SizedBox(height: 10.0),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,13 +158,14 @@ class TaskDrawer extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 10.0),
-                        Wrap(
-                          spacing: 10.0,
-                          runSpacing: 10.0,
-                          children: controller.listFiles
-                              .map((file) => Chip(
-                                    label: Text(
-                                      file.path.split('/').last,
+                        (supabaseController.filesUrl.isNotEmpty)
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: supabaseController.filesUrl.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    title: Text(
+                                      supabaseController.filesUrl[index],
                                       style: context
                                           .theme.textTheme.labelMedium!
                                           .copyWith(
@@ -160,57 +174,33 @@ class TaskDrawer extends StatelessWidget {
                                         fontSize: 16,
                                       ),
                                     ),
-                                    backgroundColor:
-                                        Theme.of(context).iconTheme.color,
-                                    deleteIcon: Icon(
-                                      HeroIcons.x_circle,
-                                      size: 20,
-                                      color: Theme.of(context)
-                                          .scaffoldBackgroundColor,
+                                    trailing: IconButton(
+                                      icon: Icon(
+                                        HeroIcons.x_circle,
+                                        size: 25,
+                                        color: context.theme.iconTheme.color,
+                                      ),
+                                      onPressed: () {
+                                        supabaseController.files
+                                            .removeAt(index);
+                                        controller.listFiles.removeAt(index);
+                                        if (supabaseController.files.isEmpty) {
+                                          controller.filesIsNotEmpty.value =
+                                              false;
+                                        }
+                                        controller.update();
+                                      },
                                     ),
-                                    onDeleted: () {
-                                      controller.listFiles.remove(file);
-                                      controller.update();
-                                    },
-                                  ))
-                              .toList(),
-                        ),
+                                  );
+                                },
+                              )
+                            : const SizedBox(),
                       ],
                     ),
                     const SizedBox(height: 10.0),
-                    (supabaseController.files.isEmpty)
-                        ? const SizedBox()
-                        : Row(
-                            children: [
-                              Expanded(
-                                child: Divider(
-                                  color: Theme.of(context).iconTheme.color,
-                                  thickness: 2,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10.0),
-                                child: Text(
-                                  LangKeys.file.tr,
-                                  style: context.theme.textTheme.labelMedium!
-                                      .copyWith(
-                                    color: Theme.of(context).iconTheme.color,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Divider(
-                                  color: Theme.of(context).iconTheme.color,
-                                  thickness: 2,
-                                ),
-                              ),
-                            ],
-                          ),
                     AppOutlineIconButton(
                       text: Text(
-                        'UPLOAD FILE',
+                        LangKeys.uploadedFiles.tr,
                         style: context.theme.textTheme.labelMedium!.copyWith(
                           color: Theme.of(context).iconTheme.color,
                           fontSize: 16,
@@ -222,10 +212,33 @@ class TaskDrawer extends StatelessWidget {
                       icon: Icon(HeroIcons.arrow_down_circle,
                           size: 25, color: context.theme.iconTheme.color),
                     ),
+                    const SizedBox(height: 20.0),
+                    AppElevatedGradientButton(
+                        text: LangKeys.createTask.tr,
+                        onTap: () {
+                          if (controller.isTaskValid) {
+                            if (isEdit) {
+                              supabaseController.updateTask(
+                                task!.id,
+                                controller.taskName,
+                                controller.description,
+                                controller.selectedTableId.value,
+                              );
+                            } else {
+                              supabaseController.createTask(
+                                  controller.taskName,
+                                  controller.description,
+                                  controller.selectedTableId.value);
+                            }
+                            Get.back();
+                          }
+                        },
+                        width: double.maxFinite,
+                        height: 50.0),
                   ],
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           );
         });
       }),

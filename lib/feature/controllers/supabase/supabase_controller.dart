@@ -22,10 +22,50 @@ class SupabaseController extends GetxController {
   final tablesForProject = <ModelTable>[].obs;
   final tasksForProject = <int, List<Task>>{}.obs;
   final files = <FileObject>[].obs;
+  final filesUrl = <String>[].obs;
+  final selectedDate = List<DateTime?>.empty().obs;
 
   final isLoadProject = false.obs;
   final isLoadTable = false.obs;
   final isLoadTask = false.obs;
+
+  void onDateChanged(List<DateTime?> date) {
+    selectedDate.value = date;
+    update();
+  }
+
+  Future<void> createTask(
+      String taskName, String description, int tableId) async {
+    try {
+      await supabase.value.from('tasks').insert({
+        'task_name': taskName,
+        'description': description,
+        'start_time': selectedDate[0],
+        'end_time': selectedDate[1],
+        'table_id': tableId,
+      });
+      await getTasksByTableId(tableId);
+    } on PostgrestException catch (error) {
+      Get.dialog(supabaseErrorDialog(error));
+    }
+    update();
+  }
+
+  Future<void> updateTask(
+      int id, String taskName, String description, int tableId) async {
+    try {
+      await supabase.value.from('tasks').update({
+        'task_name': taskName,
+        'description': description,
+        'start_time': selectedDate[0],
+        'end_time': selectedDate[1],
+      }).eq('id', id);
+      await getTasksByTableId(tableId);
+    } on PostgrestException catch (error) {
+      Get.dialog(supabaseErrorDialog(error));
+    }
+    update();
+  }
 
   Future<void> createBucket(String name) async {
     try {
@@ -70,7 +110,8 @@ class SupabaseController extends GetxController {
           }
         }
       }
-      await getAllFilesFromBucket(bucketName);
+      update();
+      await getAllFilesByUrl(bucketName);
     } on PostgrestException catch (error) {
       if (Get.isDialogOpen ?? false) Get.back();
       Get.dialog(supabaseErrorDialog(error));
@@ -81,6 +122,19 @@ class SupabaseController extends GetxController {
     try {
       final response = await supabase.value.storage.from(bucketName).list();
       files.value = response;
+      update();
+    } on PostgrestException catch (error) {
+      Get.dialog(supabaseErrorDialog(error));
+    }
+  }
+
+  Future<void> getAllFilesByUrl(String bucketName) async {
+    try {
+      final response = await supabase.value.storage.from(bucketName).list();
+      for (var element in response) {
+        filesUrl.add(
+            supabase.value.storage.from(bucketName).getPublicUrl(element.name));
+      }
       update();
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
@@ -98,6 +152,16 @@ class SupabaseController extends GetxController {
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
     }
+  }
+
+  Future<void> deleteTask(int id, int tableId) async {
+    try {
+      await supabase.value.from('tasks').delete().eq('id', id);
+      await getTasksByTableId(tableId);
+    } on PostgrestException catch (error) {
+      Get.dialog(supabaseErrorDialog(error));
+    }
+    update();
   }
 
   bool checkExistProject(String name) {

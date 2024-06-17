@@ -11,6 +11,8 @@ class LocalizationController extends GetxController {
 
   Locale get locale => _locale.value;
 
+  bool get isUkrLocale => _locale.value == _ukrLocale;
+
   @override
   void onInit() {
     super.onInit();

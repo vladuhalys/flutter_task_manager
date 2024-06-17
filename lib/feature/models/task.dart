@@ -4,10 +4,8 @@ class Task extends Equatable {
   final int id;
   final String taskName;
   final String description;
-  final String tag;
-  final int assignedUserId;
-  final DateTime startTime;
-  final DateTime endTime;
+  final DateTime startDate;
+  final DateTime endDate;
   final List<String> comments;
   final List<String> files;
   final int tableId;
@@ -16,23 +14,19 @@ class Task extends Equatable {
       {required this.id,
       required this.taskName,
       required this.description,
-      required this.tag,
-      required this.assignedUserId,
-      required this.startTime,
-      required this.endTime,
       required this.comments,
       required this.files,
-      required this.tableId});
+      required this.tableId,
+      required this.startDate,
+      required this.endDate});
 
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
       id: json['id'] as int,
       taskName: json['task_name'] as String,
       description: json['description'] as String,
-      tag: json['tag'] as String,
-      assignedUserId: json['assigned_user_id'] as int,
-      startTime: DateTime.parse(json['start_time'] as String),
-      endTime: DateTime.parse(json['end_time'] as String),
+      startDate: DateTime.parse(json['start_time'] as String),
+      endDate: DateTime.parse(json['end_time'] as String),
       comments: (json['comments'] as List).map((e) => e as String).toList(),
       files: (json['files'] as List).map((e) => e as String).toList(),
       tableId: json['table_id'] as int,
@@ -40,16 +34,6 @@ class Task extends Equatable {
   }
 
   @override
-  List<Object?> get props => [
-        id,
-        taskName,
-        description,
-        tag,
-        assignedUserId,
-        startTime,
-        endTime,
-        comments,
-        files,
-        tableId
-      ];
+  List<Object?> get props =>
+      [id, taskName, description, startDate, endDate, comments, files, tableId];
 }
