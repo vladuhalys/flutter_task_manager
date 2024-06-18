@@ -20,6 +20,8 @@ class TaskController extends GetxController {
   final selectedTableId = 0.obs;
   final listFiles = <File>[].obs;
   final filesIsNotEmpty = false.obs;
+  final selectedTask = Task.empty().obs;
+  final isEdit = false.obs;
 
   bool get isTaskValid => _isTaskValid.value;
   String get errorText => _errorText.value;
@@ -69,11 +71,7 @@ class TaskController extends GetxController {
 }
 
 class TaskDrawer extends StatelessWidget {
-  const TaskDrawer({super.key, required this.isEdit, this.task});
-
-  final bool isEdit;
-  final Task? task;
-
+  const TaskDrawer({super.key});
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -94,7 +92,7 @@ class TaskDrawer extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
                       child: Text(
-                        (!isEdit)
+                        (!controller.isEdit.value)
                             ? LangKeys.createTask.tr
                             : LangKeys.editTask.tr,
                         style: context.theme.textTheme.headlineMedium!.copyWith(
@@ -107,7 +105,7 @@ class TaskDrawer extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 10.0, bottom: 5.0),
                       child: Text(
-                        (isEdit) ? LangKeys.editTask.tr : LangKeys.taskName.tr,
+                        (controller.isEdit.value) ? LangKeys.editTask.tr : LangKeys.taskName.tr,
                         style: context.theme.textTheme.labelMedium!.copyWith(
                           color: Theme.of(context).iconTheme.color,
                           fontSize: 16,
@@ -115,6 +113,7 @@ class TaskDrawer extends StatelessWidget {
                       ),
                     ),
                     AppGradientBorderTextField(
+                        initialValue: (controller.isEdit.value) ? controller.selectedTask.value.taskName : null,
                         prefixIcon: Icon(
                           HeroIcons.clipboard,
                           size: 25,
@@ -136,6 +135,7 @@ class TaskDrawer extends StatelessWidget {
                     SizedBox(
                       height: context.height * 0.2,
                       child: AppGradientBorderTextField(
+                          initialValue: (controller.isEdit.value) ? controller.selectedTask.value.description : null,
                           keyboardType: TextInputType.multiline,
                           expands: true,
                           onChanged: controller.onDescriptionChanged),
@@ -214,12 +214,12 @@ class TaskDrawer extends StatelessWidget {
                     ),
                     const SizedBox(height: 20.0),
                     AppElevatedGradientButton(
-                        text: LangKeys.createTask.tr,
+                        text: (controller.isEdit.value)? LangKeys.editTask.tr: LangKeys.createTask.tr,
                         onTap: () {
                           if (controller.isTaskValid) {
-                            if (isEdit) {
+                            if (controller.isEdit.value) {
                               supabaseController.updateTask(
-                                task!.id,
+                                controller.selectedTask.value.id,
                                 controller.taskName,
                                 controller.description,
                                 controller.selectedTableId.value,

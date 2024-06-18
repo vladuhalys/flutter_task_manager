@@ -36,7 +36,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
   Widget build(BuildContext context) {
     return GetBuilder<SupabaseController>(builder: (controller) {
       return Scaffold(
-        endDrawer: const TaskDrawer(isEdit: false),
+        endDrawer: const TaskDrawer(),
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(

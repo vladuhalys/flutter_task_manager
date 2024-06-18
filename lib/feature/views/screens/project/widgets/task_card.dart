@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_task_manager/core/extension/extension.dart';
+import 'package:flutter_task_manager/core/localization/controller/localization_controller.dart';
 import 'package:flutter_task_manager/core/localization/keys.dart';
 import 'package:flutter_task_manager/core/theme/app_colors/app_colors.dart';
+import 'package:flutter_task_manager/feature/controllers/supabase/supabase_controller.dart';
 import 'package:flutter_task_manager/feature/models/task.dart';
+import 'package:flutter_task_manager/feature/views/screens/project/widgets/task_drawer.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -44,7 +48,13 @@ class TaskCard extends StatelessWidget {
                     HeroIcons.pencil_square,
                     color: Theme.of(context).iconTheme.color,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.find<TaskController>().selectedTask.value = task;
+                    Get.find<TaskController>().isEdit.value = true;
+                    Get.find<TaskController>().selectedTableId.value = task.tableId;
+                    Get.find<SupabaseController>().selectedDate.value = [task.startDate, task.endDate];
+                    Scaffold.of(context).openEndDrawer();
+                  },
                 ),
               ],
             ),
@@ -68,7 +78,7 @@ class TaskCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  task.endDate.toString(),
+                  "${task.startDate.toLocal().showDate(Get.find<LocalizationController>().isUkrLocale)}  -  ${task.endDate.toLocal().showDate(Get.find<LocalizationController>().isUkrLocale)}",
                   style: context.theme.textTheme.labelMedium!.copyWith(
                     color: Theme.of(context).iconTheme.color,
                     fontSize: 14,
@@ -79,7 +89,10 @@ class TaskCard extends StatelessWidget {
                     HeroIcons.trash,
                     color: AppColors.textError,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    
+                    Get.find<SupabaseController>().deleteTask(task.id);
+                  },
                 ),
               ],
             ),

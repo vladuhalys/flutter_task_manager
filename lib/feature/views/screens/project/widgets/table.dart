@@ -54,6 +54,7 @@ class TableWidget extends StatelessWidget {
               TextButton.icon(
                   onPressed: () {
                     Get.find<TaskController>().selectedTableId.value = table.id;
+                     Get.find<TaskController>().isEdit.value = false;
                     Scaffold.of(context).openEndDrawer();
                   },
                   label: Text(LangKeys.createTask.tr,
@@ -73,9 +74,7 @@ class TableWidget extends StatelessWidget {
                       );
                     },
                   ),
-                ),
-              
-                  
+                ), 
             ],
           ),
         );

@@ -19,14 +19,24 @@ class Task extends Equatable {
       required this.tableId,
       required this.startDate,
       required this.endDate});
+  
+  Task.empty()
+      : id = 0,
+        taskName = '',
+        description = '',
+        comments = [],  
+        files = [],
+        tableId = 0,
+        startDate = DateTime.now(),
+        endDate = DateTime.now();
 
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
       id: json['id'] ?? 0,
       taskName: json['task_name'] ?? '',
       description: json['description'] ?? '',
-      startDate: DateTime.tryParse(json['start_time'] ?? '') ?? DateTime.now(),
-      endDate:  DateTime.tryParse(json['end_time'] ?? '') ?? DateTime.now(),
+      startDate: DateTime.parse(json['start_date']),
+      endDate: DateTime.parse(json['end_date']),
       comments: json['comments'] ?? [],
       files: json['files'] ?? [],
       tableId: json['table_id'] ?? 0,

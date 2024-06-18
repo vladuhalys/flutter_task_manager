@@ -40,27 +40,27 @@ class SupabaseController extends GetxController {
       await supabase.value.from('tasks').insert({
         'task_name': taskName,
         'description': description,
-        'start_time': selectedDate[0],
-        'end_time': selectedDate[1],
+        'start_date': selectedDate[0].toString(),
+        'end_date': selectedDate[1].toString(),
         'table_id': tableId,
       });
-      
+      await getAllTask();
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
     }
     update();
   }
 
-  Future<void> updateTask(
-      int id, String taskName, String description, int tableId) async {
+  Future<void> updateTask(int id, String taskName, String description, int tableId) async {
     try {
       await supabase.value.from('tasks').update({
         'task_name': taskName,
         'description': description,
-        'start_time': selectedDate[0],
-        'end_time': selectedDate[1],
+        'start_date': selectedDate[0].toString(),
+        'end_date': selectedDate[1].toString(),
+        'table_id': tableId,
       }).eq('id', id);
-     
+       await getAllTask();
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
     }
@@ -141,20 +141,20 @@ class SupabaseController extends GetxController {
     }
   }
 
-  Future<void> getAllTask() async{
+  Future<void> getAllTask() async {
     try {
       final response = await supabase.value.from('tasks').select();
       tasksForProject.value = response.map((e) => Task.fromJson(e)).toList();
-      update();
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
     }
+    update();
   }
 
-  Future<void> deleteTask(int id, int tableId) async {
+  Future<void> deleteTask(int id) async {
     try {
       await supabase.value.from('tasks').delete().eq('id', id);
-      
+      await getAllTask();
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
     }
@@ -218,9 +218,8 @@ class SupabaseController extends GetxController {
       });
       tablesForProject.value =
           response.map((e) => ModelTable.fromJson(e)).toList();
-          isLoadTable.value = false;
+      isLoadTable.value = false;
       await getAllTask();
-      
       update();
     } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));

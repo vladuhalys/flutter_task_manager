@@ -7,6 +7,17 @@ extension on BuildContext {
   TextTheme get textTheme => Theme.of(this).textTheme;
 }
 
+extension ShowDate on DateTime {
+  String showDate(bool isUkr) {
+    return '$day ${(isUkr) ? month.formatMonthUkr() : month.formatMonthEng()} $year';
+  }
+
+  String showTime() {
+    toLocal().timeZoneOffset;
+    return '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}';
+  }
+}
+
 extension MonthName on int {
   static const Map<int, List<String>> monthNames = {
     1: ['January', 'Січень'],
