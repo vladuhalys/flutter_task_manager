@@ -36,6 +36,7 @@ abstract class LangKeys {
   static const String invalidStartTime = 'invalid_start_time';
   static const String invalidEndTime = 'invalid_end_time';
   static const String somethingWentWrong = 'something_went_wrong';
+  static const String emptyDescription = 'empty_description';
 
   //Warning messages
 

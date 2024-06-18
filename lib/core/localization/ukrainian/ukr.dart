@@ -40,6 +40,7 @@ abstract class Ukrainian {
     'invalid_end_date': 'Недійсна кінцева дата',
     'invalid_start_time': 'Недійсний початковий час',
     'invalid_end_time': 'Недійсний кінцевий час',
+    'empty_description': 'Опис порожній',
 
     //Warning messages
 

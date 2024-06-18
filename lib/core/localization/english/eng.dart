@@ -37,6 +37,7 @@ abstract class English {
     'invalid_end_date': 'Invalid end date',
     'invalid_start_time': 'Invalid start time',
     'invalid_end_time': 'Invalid end time',
+    'empty_description': 'Description is empty',
     //Warning messages
 
     //Info messages

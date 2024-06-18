@@ -3,6 +3,7 @@ import 'package:flutter_task_manager/core/localization/keys.dart';
 import 'package:flutter_task_manager/feature/controllers/supabase/supabase_controller.dart';
 import 'package:flutter_task_manager/feature/models/table.dart';
 import 'package:flutter_task_manager/feature/views/screens/project/widgets/popup.dart';
+import 'package:flutter_task_manager/feature/views/screens/project/widgets/task_card.dart';
 import 'package:flutter_task_manager/feature/views/screens/project/widgets/task_drawer.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -16,9 +17,12 @@ class TableWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<SupabaseController>(
       builder: (controller) {
+        final tasks = controller.tasksForProject
+            .where((element) => element.tableId == table.id)
+            .toList();
         return Container(
           width: context.width * 0.25,
-          height: double.infinity,
+          height: context.height * 0.8,
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(10.0)),
             border: Border.all(
@@ -47,34 +51,6 @@ class TableWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              if (controller.tasksForProject[table.id]?.isNotEmpty ?? false)
-                Expanded(
-                  child: ListView.builder(
-                    itemCount:
-                        controller.tasksForProject[table.id]?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.only(left: 10, right: 10),
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10.0)),
-                          border: Border.all(
-                            color: Colors.blueAccent.withOpacity(0.5),
-                            width: 2,
-                          ),
-                        ),
-                        child: Text(
-                          controller.tasksForProject[table.id]![index].taskName,
-                          style: context.theme.textTheme.labelMedium!.copyWith(
-                            color: Theme.of(context).iconTheme.color,
-                            fontSize: 16,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
               TextButton.icon(
                   onPressed: () {
                     Get.find<TaskController>().selectedTableId.value = table.id;
@@ -85,6 +61,21 @@ class TableWidget extends StatelessWidget {
                           .copyWith(fontSize: 16.0)),
                   icon: Icon(HeroIcons.plus_circle,
                       size: 20.0, color: context.textTheme.labelMedium!.color)),
+              if (tasks.isNotEmpty)
+                Expanded(
+                  child: ListView.builder(
+                    itemCount:
+                        tasks.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: TaskCard(task: tasks[index]),
+                      );
+                    },
+                  ),
+                ),
+              
+                  
             ],
           ),
         );
