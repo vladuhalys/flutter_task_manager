@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_manager/app_bindings.dart';
 import 'package:flutter_task_manager/core/localization/localization.dart';
@@ -17,6 +18,14 @@ class Application extends GetWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
+        scrollBehavior: ScrollConfiguration.of(context).copyWith(
+          dragDevices: {
+            PointerDeviceKind.touch,
+            PointerDeviceKind.mouse,
+            PointerDeviceKind.stylus,
+            PointerDeviceKind.trackpad
+          },
+        ),
         initialRoute: AppRouter.authRout,
         initialBinding: AppBindins(),
         translations: AppLocalization(), // your translations
