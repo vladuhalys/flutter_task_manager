@@ -132,11 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              Divider(
-                color: Theme.of(context).iconTheme.color,
-                thickness: 2,
-              ),
+              const SizedBox(height: 10),
               (controller.isLoadProject.value)
                   ? const AppLoader()
                   : (controller.projects.isEmpty)

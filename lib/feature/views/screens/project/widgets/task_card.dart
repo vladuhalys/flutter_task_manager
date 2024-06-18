@@ -19,7 +19,7 @@ class TaskCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
       decoration: BoxDecoration(
-        color: Colors.blueAccent.withOpacity(0.5),
+        color: Colors.blueAccent.withOpacity(0.2),
         borderRadius: const BorderRadius.all(Radius.circular(15.0)),
         border: Border.all(
           color: Colors.blueAccent.withOpacity(0.5),
@@ -68,6 +68,29 @@ class TaskCard extends StatelessWidget {
                 color: Theme.of(context).iconTheme.color,
                 fontSize: 14,
               ),
+            ),
+          ),
+          Divider(color: Colors.blueAccent.withOpacity(0.5)),
+           Padding(
+            padding: const EdgeInsets.fromLTRB(10.0, 10, 25, 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${LangKeys.comments.tr}: ${task.comments.length}',
+                  style: context.theme.textTheme.labelMedium!.copyWith(
+                    color: Theme.of(context).iconTheme.color,
+                    fontSize: 14,
+                  ),
+                ),
+                 Text(
+                  '${LangKeys.files.tr}: ${task.files.length}',
+                  style: context.theme.textTheme.labelMedium!.copyWith(
+                    color: Theme.of(context).iconTheme.color,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
             ),
           ),
           Divider(color: Colors.blueAccent.withOpacity(0.5)),

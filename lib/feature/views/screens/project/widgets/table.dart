@@ -24,11 +24,12 @@ class TableWidget extends StatelessWidget {
           width: context.width * 0.25,
           height: context.height * 0.8,
           decoration: BoxDecoration(
+            color: context.theme.iconTheme.color!.withOpacity(0.05),
             borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-            border: Border.all(
-              color: Colors.blueAccent.withOpacity(0.5),
-              width: 2,
-            ),
+            // border: Border.all(
+            //   color: Colors.blueAccent.withOpacity(0.5),
+            //   width: 2,
+            // ),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,

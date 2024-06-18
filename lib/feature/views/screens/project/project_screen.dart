@@ -145,11 +145,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-            Divider(
-              color: Theme.of(context).iconTheme.color,
-              thickness: 2,
-            ),
+            const SizedBox(height: 10),
             (controller.isLoadTable.value)
                 ? const AppLoader()
                 : (controller.tablesForProject.isEmpty)
