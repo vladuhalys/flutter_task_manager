@@ -79,6 +79,8 @@ abstract class LangKeys {
   static const String description = 'description';
   static const String assignedUser = 'assigned_user';
   static const String comments = 'comments';
+  static const String noComments = 'no_comments';
+  static const String addComment = 'add_comment';
   static const String files = 'files';
   static const String loading = 'loading';
   static const String uploadedFiles = 'uploaded_files';

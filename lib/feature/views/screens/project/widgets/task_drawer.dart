@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_manager/core/localization/keys.dart';
+import 'package:flutter_task_manager/core/theme/app_colors/app_colors.dart';
 import 'package:flutter_task_manager/feature/controllers/supabase/supabase_controller.dart';
 import 'package:flutter_task_manager/feature/models/task.dart';
 import 'package:flutter_task_manager/feature/views/screens/project/widgets/date_picker.dart';
@@ -13,34 +14,30 @@ import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 class TaskController extends GetxController {
-  final _isTaskValid = false.obs;
+  final isTaskValid = false.obs;
   final _errorText = ''.obs;
-  final _taskName = ''.obs;
-  final _description = ''.obs;
+  final taskName = ''.obs;
+  final description = ''.obs;
   final selectedTableId = 0.obs;
   final listFiles = <File>[].obs;
   final filesIsNotEmpty = false.obs;
   final selectedTask = Task.empty().obs;
   final isEdit = false.obs;
+  final commentText = ''.obs;
 
-  bool get isTaskValid => _isTaskValid.value;
   String get errorText => _errorText.value;
-  String get taskName => _taskName.value;
-  String get description => _description.value;
 
   Future<void> uploadFiles() async {
-    if (taskName.isEmpty) {
-      _isTaskValid.value = false;
+    if (taskName.value.isEmpty) {
+      isTaskValid.value = false;
       _errorText.value = LangKeys.emptyTaskNameError;
     } else {
       FilePickerResult? result =
           await FilePicker.platform.pickFiles(allowMultiple: true);
       if (result != null) {
         filesIsNotEmpty.value = true;
-        await Get.find<SupabaseController>().uploadFile(taskName, result);
-      } else {
-        // User canceled the picker
-      }
+        await Get.find<SupabaseController>().uploadFile(taskName.value, result);
+      } 
     }
     update();
   }
@@ -48,24 +45,24 @@ class TaskController extends GetxController {
   void onTaskNameChanged(String value) {
     value = value.trim();
     if (value.isEmpty) {
-      _isTaskValid.value = false;
+      isTaskValid.value = false;
       _errorText.value = LangKeys.emptyTaskNameError;
     } else if (value.length < 3) {
-      _isTaskValid.value = false;
+      isTaskValid.value = false;
       _errorText.value = LangKeys.taskShortError;
-    } else if (value.length > 20) {
-      _isTaskValid.value = false;
+    } else if (value.length > 200) {
+      isTaskValid.value = false;
       _errorText.value = LangKeys.taskLengthError;
     } else {
-      _taskName.value = value;
-      _isTaskValid.value = true;
+      taskName.value = value;
+      isTaskValid.value = true;
       _errorText.value = '';
     }
     update();
   }
 
   void onDescriptionChanged(String value) {
-    _description.value = value.trim();
+    description.value = value.trim();
     update();
   }
 }
@@ -105,7 +102,9 @@ class TaskDrawer extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 10.0, bottom: 5.0),
                       child: Text(
-                        (controller.isEdit.value) ? LangKeys.editTask.tr : LangKeys.taskName.tr,
+                        (controller.isEdit.value)
+                            ? LangKeys.editTask.tr
+                            : LangKeys.taskName.tr,
                         style: context.theme.textTheme.labelMedium!.copyWith(
                           color: Theme.of(context).iconTheme.color,
                           fontSize: 16,
@@ -113,7 +112,10 @@ class TaskDrawer extends StatelessWidget {
                       ),
                     ),
                     AppGradientBorderTextField(
-                        initialValue: (controller.isEdit.value) ? controller.selectedTask.value.taskName : null,
+                        readOnly: controller.isEdit.value,
+                        initialValue: (controller.isEdit.value)
+                            ? controller.selectedTask.value.taskName
+                            : null,
                         prefixIcon: Icon(
                           HeroIcons.clipboard,
                           size: 25,
@@ -135,7 +137,9 @@ class TaskDrawer extends StatelessWidget {
                     SizedBox(
                       height: context.height * 0.2,
                       child: AppGradientBorderTextField(
-                          initialValue: (controller.isEdit.value) ? controller.selectedTask.value.description : null,
+                          initialValue: (controller.isEdit.value)
+                              ? controller.selectedTask.value.description
+                              : null,
                           keyboardType: TextInputType.multiline,
                           expands: true,
                           onChanged: controller.onDescriptionChanged),
@@ -178,18 +182,9 @@ class TaskDrawer extends StatelessWidget {
                                       icon: Icon(
                                         HeroIcons.x_circle,
                                         size: 25,
-                                        color: context.theme.iconTheme.color,
+                                        color: AppColors.textError,
                                       ),
-                                      onPressed: () {
-                                        supabaseController.files
-                                            .removeAt(index);
-                                        controller.listFiles.removeAt(index);
-                                        if (supabaseController.files.isEmpty) {
-                                          controller.filesIsNotEmpty.value =
-                                              false;
-                                        }
-                                        controller.update();
-                                      },
+                                      onPressed: () {},
                                     ),
                                   );
                                 },
@@ -213,21 +208,104 @@ class TaskDrawer extends StatelessWidget {
                           size: 25, color: context.theme.iconTheme.color),
                     ),
                     const SizedBox(height: 20.0),
+                    (supabaseController.comments.isEmpty)
+                        ? Center(
+                            child: Text(
+                              LangKeys.noComments.tr,
+                              style:
+                                  context.theme.textTheme.labelMedium!.copyWith(
+                                color: Theme.of(context).iconTheme.color,
+                                fontSize: 16,
+                              ),
+                            ),
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: supabaseController.comments.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: Text(
+                                  supabaseController.comments[index],
+                                  style: context.theme.textTheme.labelMedium!
+                                      .copyWith(
+                                    color: Theme.of(context).iconTheme.color,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                trailing: IconButton(
+                                  icon: Icon(
+                                    HeroIcons.x_circle,
+                                    size: 25,
+                                    color: AppColors.textError,
+                                  ),
+                                  onPressed: () {
+                                    supabaseController.comments.removeAt(index);
+                                    supabaseController.update();
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                    const SizedBox(height: 20.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Expanded(
+                          child: AppGradientBorderTextField(
+                            initialValue: controller.commentText.value,
+                            prefixIcon: Icon(
+                              HeroIcons.chat_bubble_left_right,
+                              size: 25,
+                              color: context.theme.iconTheme.color,
+                            ),
+                            onChanged: (value) {
+                              controller.commentText.value = value;
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 10.0),
+                        AppOutlineIconButton(
+                          text: Text(
+                            LangKeys.addComment.tr,
+                            style:
+                                context.theme.textTheme.labelMedium!.copyWith(
+                              color: Theme.of(context).iconTheme.color,
+                              fontSize: 16,
+                            ),
+                          ),
+                          onTap: () {
+                            if (controller.commentText.value.isNotEmpty) {
+                              supabaseController.comments
+                                  .add(controller.commentText.value);
+                              supabaseController.update();
+                              controller.commentText.value = '';
+                              controller.update();
+                              supabaseController.update();
+                            }
+                          },
+                          icon: Icon(HeroIcons.plus_small,
+                              size: 25, color: context.theme.iconTheme.color),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20.0),
                     AppElevatedGradientButton(
-                        text: (controller.isEdit.value)? LangKeys.editTask.tr: LangKeys.createTask.tr,
+                        text: (controller.isEdit.value)
+                            ? LangKeys.editTask.tr
+                            : LangKeys.createTask.tr,
                         onTap: () {
-                          if (controller.isTaskValid) {
+                          if (controller.isTaskValid.value) {
                             if (controller.isEdit.value) {
                               supabaseController.updateTask(
                                 controller.selectedTask.value.id,
-                                controller.taskName,
-                                controller.description,
+                                controller.taskName.value,
+                                controller.description.value,
                                 controller.selectedTableId.value,
                               );
                             } else {
                               supabaseController.createTask(
-                                  controller.taskName,
-                                  controller.description,
+                                  controller.taskName.value,
+                                  controller.description.value,
                                   controller.selectedTableId.value);
                             }
                             Get.back();

@@ -65,6 +65,7 @@ abstract class English {
     'table_name': 'Table Name',
     'no_table': 'No table',
     'edit_project': 'Edit Project',
+    'task': 'Task',
     'create_task': 'Create Task',
     'task_name': 'Task Name',
     'no_task': 'No task',
@@ -77,6 +78,8 @@ abstract class English {
     'assigned_user': 'Assigned User',
     'description': 'Description',
     'comments': 'Comments',
+    'no_comments': 'No comments',
+    'add_comment': 'Add comment',
     'files': 'Files',
     'loading': 'Loading',
     'something_went_wrong':

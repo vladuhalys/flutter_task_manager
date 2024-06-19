@@ -73,6 +73,7 @@ abstract class Ukrainian {
     'task_name': 'Назва завдання',
     'create_task': 'Створити завдання',
     'no_task': 'Немає завдання',
+    'task': 'Завдання',
     'edit_task': 'Редагувати завдання',
     'start_date': 'Початкова дата',
     'end_date': 'Кінцева дата',
@@ -82,6 +83,8 @@ abstract class Ukrainian {
     'tag': 'Тег',
     'assigned_user': 'Призначений користувач',
     'comments': 'Коментарі',
+    'no_comments': 'Немає коментарів',
+    'add_comment': 'Додати коментар',
     'files': 'Файли',
     'loading': 'Завантаження',
     'something_went_wrong':

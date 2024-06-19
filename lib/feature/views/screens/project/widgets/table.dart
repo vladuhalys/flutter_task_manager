@@ -55,13 +55,13 @@ class TableWidget extends StatelessWidget {
               TextButton.icon(
                   onPressed: () {
                     Get.find<TaskController>().selectedTableId.value = table.id;
-                     Get.find<TaskController>().isEdit.value = false;
+                    Get.find<TaskController>().isEdit.value = false;
                     Scaffold.of(context).openEndDrawer();
                   },
                   label: Text(LangKeys.createTask.tr,
                       style: context.theme.textTheme.labelMedium!
                           .copyWith(fontSize: 16.0)),
-                  icon: Icon(HeroIcons.plus_circle,
+                  icon: Icon(HeroIcons.plus_small,
                       size: 20.0, color: context.textTheme.labelMedium!.color)),
               if (tasks.isNotEmpty)
                 Expanded(

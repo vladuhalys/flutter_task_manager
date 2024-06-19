@@ -6,8 +6,8 @@ class Task extends Equatable {
   final String description;
   final DateTime startDate;
   final DateTime endDate;
-  final List<String> comments;
-  final List<String> files;
+  final List<dynamic> comments;
+  final List<dynamic> files;
   final int tableId;
 
   const Task(

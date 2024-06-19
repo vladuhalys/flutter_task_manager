@@ -23,11 +23,19 @@ class SupabaseController extends GetxController {
   final tasksForProject = <Task>[].obs;
   final files = <FileObject>[].obs;
   final filesUrl = <String>[].obs;
+  final comments = <dynamic>[].obs;
   final selectedDate = List<DateTime?>.empty().obs;
-
   final isLoadProject = false.obs;
   final isLoadTable = false.obs;
   final isLoadTask = false.obs;
+
+  void clearAllTaskValues() {
+    files.clear();
+    filesUrl.clear();
+    selectedDate.clear();
+    isLoadTask.value = false;
+    update();
+  }
 
   void onDateChanged(List<DateTime?> date) {
     selectedDate.value = date;
@@ -42,6 +50,8 @@ class SupabaseController extends GetxController {
         'description': description,
         'start_date': selectedDate[0].toString(),
         'end_date': selectedDate[1].toString(),
+        'comments': comments,
+        'files': filesUrl,
         'table_id': tableId,
       });
       await getAllTask();
@@ -58,6 +68,8 @@ class SupabaseController extends GetxController {
         'description': description,
         'start_date': selectedDate[0].toString(),
         'end_date': selectedDate[1].toString(),
+        'comments': comments,
+        'files': filesUrl,
         'table_id': tableId,
       }).eq('id', id);
        await getAllTask();
@@ -110,10 +122,19 @@ class SupabaseController extends GetxController {
           }
         }
       }
-      update();
       await getAllFilesByUrl(bucketName);
     } on PostgrestException catch (error) {
       if (Get.isDialogOpen ?? false) Get.back();
+      Get.dialog(supabaseErrorDialog(error));
+    }
+    update();
+  }
+
+  Future<void> deleteFile(String bucketName, String fileName) async {
+    try {
+      await supabase.value.storage.from(bucketName).remove([fileName]);
+      await getAllFilesByUrl(bucketName);
+    } on PostgrestException catch (error) {
       Get.dialog(supabaseErrorDialog(error));
     }
   }

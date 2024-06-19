@@ -36,11 +36,14 @@ class TaskCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  task.taskName,
-                  style: context.theme.textTheme.labelMedium!.copyWith(
-                    color: Theme.of(context).iconTheme.color,
-                    fontSize: 16,
+                Flexible(
+                  child: Text(
+                    '${LangKeys.task.tr} #${task.id}: ${task.taskName}',
+                    style: context.theme.textTheme.labelMedium!.copyWith(
+                      color: Colors.blue,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 IconButton(
@@ -49,10 +52,14 @@ class TaskCard extends StatelessWidget {
                     color: Theme.of(context).iconTheme.color,
                   ),
                   onPressed: () {
+                    Get.find<TaskController>().taskName.value = task.taskName;
+                    Get.find<TaskController>().description.value = task.description;
                     Get.find<TaskController>().selectedTask.value = task;
                     Get.find<TaskController>().isEdit.value = true;
+                    Get.find<TaskController>().isTaskValid.value = true;
                     Get.find<TaskController>().selectedTableId.value = task.tableId;
                     Get.find<SupabaseController>().selectedDate.value = [task.startDate, task.endDate];
+                    Get.find<SupabaseController>().comments.value = task.comments;
                     Scaffold.of(context).openEndDrawer();
                   },
                 ),
