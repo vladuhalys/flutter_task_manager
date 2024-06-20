@@ -29,7 +29,7 @@ abstract class English {
     'project_is_exist': 'Project already exists',
     'empty_task_name_error': 'Task name is empty',
     'task_name_already_exists': 'Task name already exists',
-    'task_length_error': 'Task name length must be less than 20 characters',
+    'task_length_error': 'Task name length must be less than 200 characters',
     'task_short_error': 'Task name length must be more than 3 characters',
     'invalid_date': 'Invalid date',
     'invalid_time': 'Invalid time',

@@ -91,7 +91,7 @@ class TaskCard extends StatelessWidget {
                   ),
                 ),
                  Text(
-                  '${LangKeys.files.tr}: ${task.files.length}',
+                  '${LangKeys.files.tr}: ${Get.find<SupabaseController>().filesUrl[task.taskName]?.length ?? 0}',
                   style: context.theme.textTheme.labelMedium!.copyWith(
                     color: Theme.of(context).iconTheme.color,
                     fontSize: 14,
@@ -120,7 +120,7 @@ class TaskCard extends StatelessWidget {
                     color: AppColors.textError,
                   ),
                   onPressed: () {
-                    
+                    Get.find<SupabaseController>().deleteBucket(task.taskName);
                     Get.find<SupabaseController>().deleteTask(task.id);
                   },
                 ),

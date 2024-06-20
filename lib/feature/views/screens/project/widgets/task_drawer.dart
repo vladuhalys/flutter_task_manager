@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_task_manager/core/localization/keys.dart';
 import 'package:flutter_task_manager/core/theme/app_colors/app_colors.dart';
 import 'package:flutter_task_manager/feature/controllers/supabase/supabase_controller.dart';
@@ -12,6 +13,8 @@ import 'package:flutter_task_manager/feature/views/widgets/text/app_text_error.d
 import 'package:flutter_task_manager/feature/views/widgets/text_fields/app_graient_border_textfield.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:js' as js;
 
 class TaskController extends GetxController {
   final isTaskValid = false.obs;
@@ -24,6 +27,23 @@ class TaskController extends GetxController {
   final selectedTask = Task.empty().obs;
   final isEdit = false.obs;
   final commentText = ''.obs;
+  final isEditOrCreateDone = false.obs;
+
+  void clear() {
+    taskName.value = '';
+    description.value = '';
+    selectedTask.value = Task.empty();
+    listFiles.clear();
+    filesIsNotEmpty.value = false;
+    selectedTask.value = Task.empty();
+    isEdit.value = false;
+    commentText.value = '';
+    isEditOrCreateDone.value = false;
+    
+    Get.find<SupabaseController>().selectedDate.value = [];
+    Get.find<SupabaseController>().comments.clear();
+    update();
+  }
 
   String get errorText => _errorText.value;
 
@@ -37,7 +57,7 @@ class TaskController extends GetxController {
       if (result != null) {
         filesIsNotEmpty.value = true;
         await Get.find<SupabaseController>().uploadFile(taskName.value, result);
-      } 
+      }
     }
     update();
   }
@@ -53,7 +73,12 @@ class TaskController extends GetxController {
     } else if (value.length > 200) {
       isTaskValid.value = false;
       _errorText.value = LangKeys.taskLengthError;
-    } else {
+    } 
+    else if (Get.find<SupabaseController>().tasksForProject.any((element) => element.taskName == value)) {
+      isTaskValid.value = false;
+      _errorText.value = LangKeys.taskNameAlreadyExists;
+    }
+    else {
       taskName.value = value;
       isTaskValid.value = true;
       _errorText.value = '';
@@ -162,29 +187,55 @@ class TaskDrawer extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 10.0),
-                        (supabaseController.filesUrl.isNotEmpty)
+                        (supabaseController.filesUrl.isNotEmpty && supabaseController.filesUrl[controller.taskName.value] != null && supabaseController.filesUrl[controller.taskName.value]!.isNotEmpty && controller.isTaskValid.value)
                             ? ListView.builder(
                                 shrinkWrap: true,
-                                itemCount: supabaseController.filesUrl.length,
+                                itemCount: supabaseController.filesUrl[controller.taskName.value]?.length ?? 0,
                                 itemBuilder: (context, index) {
-                                  return ListTile(
-                                    title: Text(
-                                      supabaseController.filesUrl[index],
-                                      style: context
-                                          .theme.textTheme.labelMedium!
-                                          .copyWith(
-                                        color:
-                                            Theme.of(context).iconTheme.color,
-                                        fontSize: 16,
+                                  return InkWell(
+                                    borderRadius: BorderRadius.circular(15),
+                                    onTap: () => js.context.callMethod('open', [supabaseController.filesUrl[controller.taskName.value]?[index]]),
+                                    child: ListTile(
+                                      title: Text(
+                                        supabaseController.filesUrl[controller.taskName.value]?[index],
+                                        style: context
+                                            .theme.textTheme.labelMedium!
+                                            .copyWith(
+                                          color:
+                                              Theme.of(context).iconTheme.color,
+                                          fontSize: 16,
+                                        ),
                                       ),
-                                    ),
-                                    trailing: IconButton(
-                                      icon: Icon(
-                                        HeroIcons.x_circle,
-                                        size: 25,
-                                        color: AppColors.textError,
+                                      leading: IconButton(
+                                        onPressed: () async { 
+                                           await Clipboard.setData(ClipboardData(text: supabaseController.filesUrl[controller.taskName.value]?[index]));
+                                         },
+                                        icon: Icon(
+                                          HeroIcons.clipboard_document_check,
+                                          size: 25,
+                                          color: Theme.of(context).iconTheme.color,
+                                        ),
                                       ),
-                                      onPressed: () {},
+                                      trailing: IconButton(
+                                        icon: Icon(
+                                          HeroIcons.x_circle,
+                                          size: 25,
+                                          color: AppColors.textError,
+                                        ),
+                                        onPressed: () {
+                                          String file =
+                                              supabaseController.filesUrl[controller.taskName.value]?[index];
+                                          String pattern = 'https://satueztatdoodrspeksa.supabase.co/storage/v1/object/public/${controller.taskName.value}/';
+                                          file = file.replaceFirst(
+                                              pattern,
+                                              '');
+                                          supabaseController.deleteFile(
+                                              controller.taskName.value, file);
+                                          supabaseController.filesUrl[controller.taskName.value]?.removeAt(index);
+                                      
+                                          supabaseController.update();
+                                        },
+                                      ),
                                     ),
                                   );
                                 },
@@ -202,7 +253,16 @@ class TaskDrawer extends StatelessWidget {
                         ),
                       ),
                       onTap: () {
-                        controller.uploadFiles();
+                        if(controller.taskName.value.isNotEmpty)
+                        {
+                          controller.uploadFiles();
+                        }
+                        else
+                        {
+                          controller.isTaskValid.value = false;
+                          controller._errorText.value = LangKeys.emptyTaskNameError;
+                          controller.update();
+                        }
                       },
                       icon: Icon(HeroIcons.arrow_down_circle,
                           size: 25, color: context.theme.iconTheme.color),
@@ -224,6 +284,11 @@ class TaskDrawer extends StatelessWidget {
                             itemCount: supabaseController.comments.length,
                             itemBuilder: (context, index) {
                               return ListTile(
+                                leading: Icon(
+                                  HeroIcons.chat_bubble_left,
+                                  size: 25,
+                                  color: context.theme.iconTheme.color,
+                                ),
                                 title: Text(
                                   supabaseController.comments[index],
                                   style: context.theme.textTheme.labelMedium!
@@ -308,6 +373,7 @@ class TaskDrawer extends StatelessWidget {
                                   controller.description.value,
                                   controller.selectedTableId.value);
                             }
+                            controller.isEditOrCreateDone.value = true;
                             Get.back();
                           }
                         },

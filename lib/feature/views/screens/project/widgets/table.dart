@@ -56,6 +56,8 @@ class TableWidget extends StatelessWidget {
                   onPressed: () {
                     Get.find<TaskController>().selectedTableId.value = table.id;
                     Get.find<TaskController>().isEdit.value = false;
+                    Get.find<TaskController>().isEditOrCreateDone.value = false;
+                    Get.find<TaskController>().clear();
                     Scaffold.of(context).openEndDrawer();
                   },
                   label: Text(LangKeys.createTask.tr,

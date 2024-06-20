@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-
 class Task extends Equatable {
   final int id;
   final String taskName;
@@ -7,7 +6,6 @@ class Task extends Equatable {
   final DateTime startDate;
   final DateTime endDate;
   final List<dynamic> comments;
-  final List<dynamic> files;
   final int tableId;
 
   const Task(
@@ -15,7 +13,6 @@ class Task extends Equatable {
       required this.taskName,
       required this.description,
       required this.comments,
-      required this.files,
       required this.tableId,
       required this.startDate,
       required this.endDate});
@@ -25,7 +22,6 @@ class Task extends Equatable {
         taskName = '',
         description = '',
         comments = [],  
-        files = [],
         tableId = 0,
         startDate = DateTime.now(),
         endDate = DateTime.now();
@@ -38,12 +34,11 @@ class Task extends Equatable {
       startDate: DateTime.parse(json['start_date']),
       endDate: DateTime.parse(json['end_date']),
       comments: json['comments'] ?? [],
-      files: json['files'] ?? [],
       tableId: json['table_id'] ?? 0,
     );
   }
 
   @override
   List<Object?> get props =>
-      [id, taskName, description, startDate, endDate, comments, files, tableId];
+      [id, taskName, description, startDate, endDate, comments, tableId];
 }

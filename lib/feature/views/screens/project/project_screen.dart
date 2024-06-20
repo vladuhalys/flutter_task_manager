@@ -37,6 +37,15 @@ class _ProjectScreenState extends State<ProjectScreen> {
     return GetBuilder<SupabaseController>(builder: (controller) {
       return Scaffold(
         endDrawer: const TaskDrawer(),
+        onEndDrawerChanged: (isOpened) {
+          if(!isOpened){
+            if(Get.find<TaskController>().isEditOrCreateDone.value == false && Get.find<TaskController>().taskName.value.isNotEmpty){
+             Get.find<SupabaseController>().deleteBucket(Get.find<TaskController>().taskName.value);
+            }
+            
+          }
+        },
+        drawerEnableOpenDragGesture: false,
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(
