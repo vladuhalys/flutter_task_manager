@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_task_manager/core/localization/keys.dart';
 import 'package:flutter_task_manager/feature/controllers/supabase/supabase_controller.dart';
 import 'package:flutter_task_manager/feature/models/table.dart';
+import 'package:flutter_task_manager/feature/views/screens/project/widgets/drop_dawn.dart';
 import 'package:flutter_task_manager/feature/views/screens/project/widgets/popup.dart';
 import 'package:flutter_task_manager/feature/views/screens/project/widgets/task_card.dart';
 import 'package:flutter_task_manager/feature/views/screens/project/widgets/task_drawer.dart';
@@ -54,6 +55,10 @@ class TableWidget extends StatelessWidget {
               ),
               TextButton.icon(
                   onPressed: () {
+                    Get.find<DropDawnController>().setItems(controller.tablesForProject);
+                    Get.find<DropDawnController>().setSelectedItemText(table.tableName);
+                    Get.find<DropDawnController>().setSelectedItem(table);
+                    Get.find<DropDawnController>().setSelectedTableId(table.id);
                     Get.find<TaskController>().selectedTableId.value = table.id;
                     Get.find<TaskController>().isEdit.value = false;
                     Get.find<TaskController>().isEditOrCreateDone.value = false;

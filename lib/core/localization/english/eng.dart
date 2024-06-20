@@ -70,6 +70,7 @@ abstract class English {
     'task_name': 'Task Name',
     'no_task': 'No task',
     'edit_task': 'Edit Task',
+    'edit_task_for_table': 'Edit Task for Table',
     'start_date': 'Start Date',
     'end_date': 'End Date',
     'start_time': 'Start Time',

@@ -7,6 +7,7 @@ import 'package:flutter_task_manager/core/theme/app_colors/app_colors.dart';
 import 'package:flutter_task_manager/feature/controllers/supabase/supabase_controller.dart';
 import 'package:flutter_task_manager/feature/models/task.dart';
 import 'package:flutter_task_manager/feature/views/screens/project/widgets/date_picker.dart';
+import 'package:flutter_task_manager/feature/views/screens/project/widgets/drop_dawn.dart';
 import 'package:flutter_task_manager/feature/views/widgets/buttons/app_elevated_gradient_btn.dart';
 import 'package:flutter_task_manager/feature/views/widgets/buttons/app_outline_icon_button.dart';
 import 'package:flutter_task_manager/feature/views/widgets/text/app_text_error.dart';
@@ -39,7 +40,7 @@ class TaskController extends GetxController {
     isEdit.value = false;
     commentText.value = '';
     isEditOrCreateDone.value = false;
-    
+
     Get.find<SupabaseController>().selectedDate.value = [];
     Get.find<SupabaseController>().comments.clear();
     update();
@@ -73,12 +74,12 @@ class TaskController extends GetxController {
     } else if (value.length > 200) {
       isTaskValid.value = false;
       _errorText.value = LangKeys.taskLengthError;
-    } 
-    else if (Get.find<SupabaseController>().tasksForProject.any((element) => element.taskName == value)) {
+    } else if (Get.find<SupabaseController>()
+        .tasksForProject
+        .any((element) => element.taskName == value)) {
       isTaskValid.value = false;
       _errorText.value = LangKeys.taskNameAlreadyExists;
-    }
-    else {
+    } else {
       taskName.value = value;
       isTaskValid.value = true;
       _errorText.value = '';
@@ -113,14 +114,22 @@ class TaskDrawer extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
-                      child: Text(
-                        (!controller.isEdit.value)
-                            ? LangKeys.createTask.tr
-                            : LangKeys.editTask.tr,
-                        style: context.theme.textTheme.headlineMedium!.copyWith(
-                          fontSize: 30,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
+                      child: Row(
+                        children: [
+                          Text(
+                            (!controller.isEdit.value)
+                                ? LangKeys.createTask.tr
+                                : LangKeys.editTaskForTable.tr,
+                            style: context.theme.textTheme.headlineMedium!
+                                .copyWith(
+                              fontSize: 30,
+                              color: Theme.of(context).iconTheme.color,
+                            ),
+                          ),
+                          (controller.isEdit.value)
+                              ? const Expanded(child: AppDropDawn())
+                              : const SizedBox(),
+                        ],
                       ),
                     ),
                     const SizedBox(height: 10.0),
@@ -187,17 +196,31 @@ class TaskDrawer extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 10.0),
-                        (supabaseController.filesUrl.isNotEmpty && supabaseController.filesUrl[controller.taskName.value] != null && supabaseController.filesUrl[controller.taskName.value]!.isNotEmpty && controller.isTaskValid.value)
+                        (supabaseController.filesUrl.isNotEmpty &&
+                                supabaseController
+                                        .filesUrl[controller.taskName.value] !=
+                                    null &&
+                                supabaseController
+                                    .filesUrl[controller.taskName.value]!
+                                    .isNotEmpty &&
+                                controller.isTaskValid.value)
                             ? ListView.builder(
                                 shrinkWrap: true,
-                                itemCount: supabaseController.filesUrl[controller.taskName.value]?.length ?? 0,
+                                itemCount: supabaseController
+                                        .filesUrl[controller.taskName.value]
+                                        ?.length ??
+                                    0,
                                 itemBuilder: (context, index) {
                                   return InkWell(
                                     borderRadius: BorderRadius.circular(15),
-                                    onTap: () => js.context.callMethod('open', [supabaseController.filesUrl[controller.taskName.value]?[index]]),
+                                    onTap: () => js.context.callMethod('open', [
+                                      supabaseController.filesUrl[
+                                          controller.taskName.value]?[index]
+                                    ]),
                                     child: ListTile(
                                       title: Text(
-                                        supabaseController.filesUrl[controller.taskName.value]?[index],
+                                        supabaseController.filesUrl[
+                                            controller.taskName.value]?[index],
                                         style: context
                                             .theme.textTheme.labelMedium!
                                             .copyWith(
@@ -207,13 +230,17 @@ class TaskDrawer extends StatelessWidget {
                                         ),
                                       ),
                                       leading: IconButton(
-                                        onPressed: () async { 
-                                           await Clipboard.setData(ClipboardData(text: supabaseController.filesUrl[controller.taskName.value]?[index]));
-                                         },
+                                        onPressed: () async {
+                                          await Clipboard.setData(ClipboardData(
+                                              text: supabaseController.filesUrl[
+                                                      controller.taskName.value]
+                                                  ?[index]));
+                                        },
                                         icon: Icon(
                                           HeroIcons.clipboard_document_check,
                                           size: 25,
-                                          color: Theme.of(context).iconTheme.color,
+                                          color:
+                                              Theme.of(context).iconTheme.color,
                                         ),
                                       ),
                                       trailing: IconButton(
@@ -224,15 +251,25 @@ class TaskDrawer extends StatelessWidget {
                                         ),
                                         onPressed: () {
                                           String file =
-                                              supabaseController.filesUrl[controller.taskName.value]?[index];
-                                          String pattern = 'https://satueztatdoodrspeksa.supabase.co/storage/v1/object/public/${controller.taskName.value}/';
-                                          file = file.replaceFirst(
-                                              pattern,
-                                              '');
+                                              supabaseController.filesUrl[
+                                                      controller.taskName.value]
+                                                  ?[index];
+                                          final RegExp regex =
+                                              RegExp(r'/([^/\\]+)$');
+                                          final match = regex.firstMatch(file);
+                                          String fileNameWithPattern = "";
+                                          if (match != null) {
+                                            fileNameWithPattern =
+                                                match.group(1)!;
+                                          }
                                           supabaseController.deleteFile(
-                                              controller.taskName.value, file);
-                                          supabaseController.filesUrl[controller.taskName.value]?.removeAt(index);
-                                      
+                                              controller.taskName.value,
+                                              fileNameWithPattern);
+                                          supabaseController.filesUrl[
+                                                  controller.taskName.value]
+                                              ?.removeAt(index);
+                                          controller.isEditOrCreateDone.value =
+                                              true;
                                           supabaseController.update();
                                         },
                                       ),
@@ -253,14 +290,12 @@ class TaskDrawer extends StatelessWidget {
                         ),
                       ),
                       onTap: () {
-                        if(controller.taskName.value.isNotEmpty)
-                        {
+                        if (controller.taskName.value.isNotEmpty) {
                           controller.uploadFiles();
-                        }
-                        else
-                        {
+                        } else {
                           controller.isTaskValid.value = false;
-                          controller._errorText.value = LangKeys.emptyTaskNameError;
+                          controller._errorText.value =
+                              LangKeys.emptyTaskNameError;
                           controller.update();
                         }
                       },
@@ -361,6 +396,9 @@ class TaskDrawer extends StatelessWidget {
                         onTap: () {
                           if (controller.isTaskValid.value) {
                             if (controller.isEdit.value) {
+                              controller.selectedTableId.value =
+                                  Get.find<DropDawnController>()
+                                      .getSelectedTableId;
                               supabaseController.updateTask(
                                 controller.selectedTask.value.id,
                                 controller.taskName.value,

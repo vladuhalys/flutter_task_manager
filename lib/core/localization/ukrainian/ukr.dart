@@ -75,6 +75,7 @@ abstract class Ukrainian {
     'no_task': 'Немає завдання',
     'task': 'Завдання',
     'edit_task': 'Редагувати завдання',
+    'edit_task_for_table': 'Редагувати завдання для таблиці',
     'start_date': 'Початкова дата',
     'end_date': 'Кінцева дата',
     'start_time': 'Початковий час',

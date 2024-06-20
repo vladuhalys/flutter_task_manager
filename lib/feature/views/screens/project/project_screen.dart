@@ -4,6 +4,7 @@ import 'package:flutter_task_manager/core/localization/keys.dart';
 import 'package:flutter_task_manager/core/router/router.dart';
 import 'package:flutter_task_manager/core/theme/theme_controller.dart';
 import 'package:flutter_task_manager/feature/controllers/supabase/supabase_controller.dart';
+import 'package:flutter_task_manager/feature/views/screens/project/widgets/drop_dawn.dart';
 import 'package:flutter_task_manager/feature/views/screens/project/widgets/table.dart';
 import 'package:flutter_task_manager/feature/views/screens/project/widgets/task_drawer.dart';
 import 'package:flutter_task_manager/feature/views/widgets/buttons/app_outline_gradient_btn.dart';
@@ -23,12 +24,14 @@ class _ProjectScreenState extends State<ProjectScreen> {
   @override
   void initState() {
     Get.put(TaskController());
+    Get.put(DropDawnController(), permanent: true);
     super.initState();
   }
 
   @override
   void dispose() {
     Get.delete<TaskController>();
+    Get.delete<DropDawnController>();
     super.dispose();
   }
 

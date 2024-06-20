@@ -5,6 +5,7 @@ import 'package:flutter_task_manager/core/localization/keys.dart';
 import 'package:flutter_task_manager/core/theme/app_colors/app_colors.dart';
 import 'package:flutter_task_manager/feature/controllers/supabase/supabase_controller.dart';
 import 'package:flutter_task_manager/feature/models/task.dart';
+import 'package:flutter_task_manager/feature/views/screens/project/widgets/drop_dawn.dart';
 import 'package:flutter_task_manager/feature/views/screens/project/widgets/task_drawer.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -60,6 +61,9 @@ class TaskCard extends StatelessWidget {
                     Get.find<TaskController>().selectedTableId.value = task.tableId;
                     Get.find<SupabaseController>().selectedDate.value = [task.startDate, task.endDate];
                     Get.find<SupabaseController>().comments.value = task.comments;
+                    Get.find<DropDawnController>().setItems(Get.find<SupabaseController>().tablesForProject);
+                    Get.find<DropDawnController>().setSelectedItemText(Get.find<SupabaseController>().getTableNameById(task.tableId));
+                    Get.find<DropDawnController>().setSelectedItem(Get.find<SupabaseController>().getTableById(task.tableId));
                     Scaffold.of(context).openEndDrawer();
                   },
                 ),

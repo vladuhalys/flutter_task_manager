@@ -28,6 +28,26 @@ class SupabaseController extends GetxController {
   final isLoadTable = false.obs;
   final isLoadTask = false.obs;
 
+  String getTableNameById(int id) {
+    String result = '';
+    for (var element in tablesForProject) {
+      if (element.id == id) {
+        result = element.tableName;
+      }
+    }
+    return result;
+  }
+
+  ModelTable getTableById(int id) {
+    ModelTable result = const ModelTable.empty();
+    for (var element in tablesForProject) {
+      if (element.id == id) {
+        result = element;
+      }
+    }
+    return result;
+  }
+
   void clearAllTaskValues() {
     filesUrl.clear();
     selectedDate.clear();

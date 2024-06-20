@@ -8,6 +8,11 @@ class ModelTable extends Equatable {
   const ModelTable(
       {required this.id, required this.tableName, required this.projectId});
 
+  const ModelTable.empty()
+      : id = 0,
+        tableName = '',
+        projectId = 0;
+
   factory ModelTable.fromJson(Map<String, dynamic> json) {
     return ModelTable(
       id: json['id'] as int,

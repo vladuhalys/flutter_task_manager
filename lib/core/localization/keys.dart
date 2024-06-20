@@ -70,6 +70,7 @@ abstract class LangKeys {
   static const String createTask = 'create_task';
   static const String noTask = 'no_task';
   static const String editTask = 'edit_task';
+  static const String editTaskForTable = 'edit_task_for_table';
   static const String task = 'task';
   static const String startDate = 'start_date';
   static const String endDate = 'end_date';

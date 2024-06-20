@@ -29,6 +29,7 @@ dependencies:
   animated_text_kit: ^4.2.2
   file_picker: ^8.0.4
   calendar_date_picker2: ^1.0.6
+  dropdown_button2: ^2.3.9
 
 dev_dependencies:
   flutter_test:
