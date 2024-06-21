@@ -10,7 +10,7 @@ class AppBindins extends Bindings {
   void dependencies() {
     Get.put<ThemeController>(ThemeController(), permanent: true);
     Get.put<LoggerController>(LoggerController(), permanent: true);
-    Get.lazyPut<ValidationController>(() => ValidationController());
+    Get.put<ValidationController>(ValidationController(), permanent: true);
     Get.put<LocalizationController>(LocalizationController(), permanent: true);
     Get.put<SupabaseController>(SupabaseController(), permanent: true);
   }

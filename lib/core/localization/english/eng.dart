@@ -23,7 +23,7 @@ abstract class English {
     'empty_project_name_error': 'Project name is empty',
     'project_name_already_exists': 'Project name already exists',
     'project_length_error':
-        'Project name length must be less than 20 characters',
+        'Project name length must be less than 100 characters',
     'table_short_error': 'Table name length must be more than 3 characters',
     'project_short_error': 'Project name length must be more than 3 characters',
     'project_is_exist': 'Project already exists',
@@ -54,6 +54,7 @@ abstract class English {
     'have_not_account': 'Don\'t have an account?',
     'success': 'Success',
     'checkEmailForConfirmation': 'Check your email for confirmation',
+    'thankYouForRegistering': 'Thank you for registering',
     'ok': 'OK',
     'create_project': 'Create Project',
     'create_new_project': 'Create New Project',

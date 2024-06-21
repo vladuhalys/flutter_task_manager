@@ -17,7 +17,6 @@ class SignInCard extends GetWidget<ThemeController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.find<ValidationController>();
     return GetBuilder<ValidationController>(builder: (validationController) {
       return AppGradientBorderCard(
         width: context.width * 0.4,

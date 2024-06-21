@@ -25,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Get.put(ProjectDialogController());
     Get.find<SupabaseController>().getProjects();
     Get.find<SupabaseController>().setCurrentAuthToTableUser();
+    Get.find<SupabaseController>().getCurrentUser();
     super.initState();
   }
 

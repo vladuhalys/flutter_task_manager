@@ -24,7 +24,7 @@ class ProjectDialogController extends GetxController {
     } else if (value.length < 3) {
       _isProjectValid.value = false;
       _errorText.value = LangKeys.projectShortError;
-    } else if (value.length > 20) {
+    } else if (value.length > 100) {
       _isProjectValid.value = false;
       _errorText.value = LangKeys.projectLengthError;
     } else {
@@ -33,6 +33,12 @@ class ProjectDialogController extends GetxController {
       _errorText.value = '';
     }
     update();
+  }
+
+  void clear() {
+    _isProjectValid.value = false;
+    _errorText.value = '';
+    _projectName.value = '';
   }
 }
 
@@ -70,10 +76,12 @@ class _AppProjectDialogState extends State<AppProjectDialog> {
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: SizedBox(
             width: context.width * 0.5,
-            height: 80,
+            height: 120,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 AppGradientBorderTextField(
+                  maxLength: 120,
                   hintText: LangKeys.projectName.tr,
                   initialValue:
                       (widget.isEdit) ? widget.project!.projectName : '',
@@ -92,6 +100,7 @@ class _AppProjectDialogState extends State<AppProjectDialog> {
         actions: [
           TextButton(
             onPressed: () {
+              controller.clear();
               Get.back();
             },
             child: Text(

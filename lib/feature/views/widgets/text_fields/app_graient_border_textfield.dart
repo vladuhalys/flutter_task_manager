@@ -16,7 +16,7 @@ class AppGradientBorderTextField extends StatelessWidget {
       this.initialValue,
       this.minLines,
       this.maxLines,
-      this.expands});
+      this.expands, this.maxLength});
 
   final TextEditingController? controller;
   final String? hintText;
@@ -30,10 +30,12 @@ class AppGradientBorderTextField extends StatelessWidget {
   final int? minLines;
   final int? maxLines;
   final bool? expands;
+  final int? maxLength;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLength: maxLength,
       textAlignVertical: TextAlignVertical.top,
       textAlign: TextAlign.start,
       expands: expands ?? false,

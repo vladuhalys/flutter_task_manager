@@ -55,6 +55,7 @@ abstract class LangKeys {
   static const String haveNotAccount = 'have_not_account';
   static const String success = 'success';
   static const String checkEmailForConfirmation = 'checkEmailForConfirmation';
+  static const String thankYouForRegistering = 'thankYouForRegistering';
   static const String ok = 'ok';
   static const String createProject = 'create_project';
   static const String createNewProject = 'create_new_project';

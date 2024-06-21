@@ -64,6 +64,7 @@ class TaskCard extends StatelessWidget {
                     Get.find<DropDawnController>().setItems(Get.find<SupabaseController>().tablesForProject);
                     Get.find<DropDawnController>().setSelectedItemText(Get.find<SupabaseController>().getTableNameById(task.tableId));
                     Get.find<DropDawnController>().setSelectedItem(Get.find<SupabaseController>().getTableById(task.tableId));
+                    Get.find<DropDawnController>().setSelectedTableId(task.tableId);
                     Scaffold.of(context).openEndDrawer();
                   },
                 ),

@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_manager/core/const/const.dart';
 import 'package:flutter_task_manager/core/localization/keys.dart';
+import 'package:flutter_task_manager/core/router/router.dart';
 import 'package:flutter_task_manager/feature/controllers/validation/validation_controller.dart';
 import 'package:flutter_task_manager/feature/models/project.dart';
 import 'package:flutter_task_manager/feature/models/table.dart';
@@ -353,14 +354,27 @@ class SupabaseController extends GetxController {
     update();
   }
 
+  Future<void> getCurrentUser() async{
+    final response = await supabase.value
+          .from('users')
+          .select()
+          .eq('user_name', supabase.value.auth.currentUser!.email!);
+      currentUser.value = ModelUser(
+          id: response[0]['id'],
+          userName: response[0]['user_name'],
+          roleId: response[0]['role_id']);
+    update();
+  }
+
   //Get all projects
   Future<void> getProjects() async {
     try {
       isLoadProject.value = true;
+      await getCurrentUser();
       update();
       final response = await supabase.value
           .from('projects')
-          .select()
+          .select().eq('owner_id', currentUser.value.id)
           .timeout(const Duration(seconds: 15), onTimeout: () {
         throw const PostgrestException(
           message: 'Timeout request',
@@ -421,6 +435,14 @@ class SupabaseController extends GetxController {
     try {
       await supabase.value.auth
           .signInWithPassword(email: email, password: password);
+          if(supabase.value.auth.currentUser != null)
+          {
+            Get.offAndToNamed(AppRouter.home);
+          }
+      //check auth
+      if (supabase.value.auth.currentUser != null) {
+         
+      }
     } catch (e) {
       Get.dialog(
         AlertDialog(
@@ -470,11 +492,17 @@ class SupabaseController extends GetxController {
 
   Future<void> signOut() async {
     await supabase.value.auth.signOut();
+    supabase.value.auth.refreshSession();
     update();
+    Get.offAndToNamed(AppRouter.login);
   }
 
   Future<void> signUp(String email, String password) async {
     await supabase.value.auth.signUp(email: email, password: password);
+    if (supabase.value.auth.currentUser != null) {
+      await setUserToTableUsers(email);
+    }
+    update();
     Get.dialog(
       AlertDialog(
         backgroundColor: Get.context?.theme.scaffoldBackgroundColor,
@@ -482,7 +510,7 @@ class SupabaseController extends GetxController {
           LangKeys.success.tr,
           style: Get.context!.textTheme.headlineMedium!.copyWith(fontSize: 35),
         ),
-        content: Text(LangKeys.checkEmailForConfirmation.tr,
+        content: Text(LangKeys.thankYouForRegistering.tr,
             style: Get.context!.textTheme.titleMedium!.copyWith(fontSize: 25)),
         actions: [
           TextButton(
@@ -497,7 +525,22 @@ class SupabaseController extends GetxController {
         ],
       ),
     );
-    update();
+  }
+
+  Future<void> setUserToTableUsers(String email) async
+  {
+     final response = await supabase.value
+          .from('users')
+          .select()
+          .eq('user_name', email);
+      if (response.isEmpty) {
+        await supabase.value.from('users').insert({
+          'user_name': email,
+          'role_id': 1,
+        });
+      }
+      update();
+    
   }
 
   Future<void> setCurrentAuthToTableUser() async {

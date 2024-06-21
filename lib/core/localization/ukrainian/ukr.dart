@@ -22,7 +22,7 @@ abstract class Ukrainian {
     'empty_project_name_error': 'Назва проекту порожня',
     'project_name_already_exists': 'Назва проекту вже існує',
     'project_length_error':
-        'Довжина назви проекту повинна бути менше 20 символів',
+        'Довжина назви проекту повинна бути менше 100 символів',
     'table_length_error':
         'Довжина назви таблиці повинна бути менше 20 символів',
     'table_short_error': 'Довжина назви таблиці повинна бути більше 3 символів',
@@ -59,6 +59,7 @@ abstract class Ukrainian {
     'success': 'Успішно',
     'checkEmailForConfirmation':
         'Перевірте свою електронну пошту для підтвердження',
+    'thankYouForRegistering': 'Дякуємо за реєстрацію',
     'ok': 'OK',
     'create_project': 'Створити проект',
     'create_new_project': 'Створити новий проект',

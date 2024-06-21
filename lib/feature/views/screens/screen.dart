@@ -9,7 +9,7 @@ class AuthRoutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Get.find<SupabaseController>().isAuth
+    return Get.find<SupabaseController>().supabase.value.auth.currentUser != null
         ? const HomeScreen()
         : LoginScreen();
   }

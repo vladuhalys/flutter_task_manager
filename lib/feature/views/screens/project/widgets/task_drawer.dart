@@ -319,10 +319,17 @@ class TaskDrawer extends StatelessWidget {
                             itemCount: supabaseController.comments.length,
                             itemBuilder: (context, index) {
                               return ListTile(
-                                leading: Icon(
-                                  HeroIcons.chat_bubble_left,
-                                  size: 25,
-                                  color: context.theme.iconTheme.color,
+                                leading: IconButton(
+                                  onPressed: () async {
+                                    await Clipboard.setData(ClipboardData(
+                                        text: supabaseController
+                                            .comments[index]));
+                                  },
+                                  icon: Icon(
+                                    HeroIcons.chat_bubble_left,
+                                    size: 25,
+                                    color: context.theme.iconTheme.color,
+                                  ),
                                 ),
                                 title: Text(
                                   supabaseController.comments[index],
